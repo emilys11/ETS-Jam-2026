@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class DynoSoulsManager : MonoBehaviour
 {
-    public static int startAmount = 500;
+    public static int startAmount = 300;
     public static int currentAmount;
 
     void OnEnable()
     {
         DynoSoulsEvents.OnGainCoins += AddCoins;
-        DynoSoulsEvents.OnSpendCoins += RemoveCoins;
+        DynoSoulsEvents.OnSpendCoins += TryRemoveCoins;
         DynoSoulsEvents.OnResetCoins += ResetCoins;
 
         currentAmount = startAmount;
@@ -17,7 +17,7 @@ public class DynoSoulsManager : MonoBehaviour
     void OnDisable()
     {
         DynoSoulsEvents.OnGainCoins -= AddCoins;
-        DynoSoulsEvents.OnSpendCoins -= RemoveCoins;
+        DynoSoulsEvents.OnSpendCoins -= TryRemoveCoins;
         DynoSoulsEvents.OnResetCoins -= ResetCoins;
     }
 
@@ -40,6 +40,12 @@ public class DynoSoulsManager : MonoBehaviour
         Debug.Log("RemoveCoins called: "+remAmount);
         currentAmount -= remAmount;
         DynoSoulsEvents.UpdateUI();
+    }
+
+    public void TryRemoveCoins(int remAmount)
+    {
+        if (currentAmount < remAmount) return;
+        RemoveCoins(remAmount);
     }
 
 }

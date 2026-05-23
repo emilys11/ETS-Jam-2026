@@ -6,12 +6,17 @@ public class DynoSoulsUI : MonoBehaviour
 {
     [Header("Text settings")]
     public TextMeshProUGUI amountText;
-
     
+    void Start()
+    {
+        amountText.text = DynoSoulsManager.startAmount.ToString();
+    }
+
 
     void OnEnable()
     {
         DynoSoulsEvents.OnUpdateUI += UpdateAmount;
+        amountText.text = DynoSoulsManager.currentAmount.ToString();
     }
 
     void OnDisable()
@@ -21,10 +26,8 @@ public class DynoSoulsUI : MonoBehaviour
 
     // AMOUNT TEXT RELATED -------------------------------------------------------------------------------------------
 
-
     public void UpdateAmount()
     {
-        Debug.Log("UpdateAmount called");
         amountText.text = DynoSoulsManager.currentAmount.ToString();
 
     }
