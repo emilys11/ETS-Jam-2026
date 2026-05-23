@@ -23,6 +23,7 @@ using UnityEngine.Audio;
         [SerializeField] public AudioClip spawnEffect;
         [SerializeField] public AudioClip deathEffect;
         [SerializeField] public AudioClip meteorLanding;
+        [SerializeField] public AudioClip volcanoEffect;
 
 
     private void Awake()

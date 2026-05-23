@@ -21,7 +21,7 @@ public class Volcano : MonoBehaviour
     IEnumerator EruptCoroutine()
     {
         deathZone.gameObject.SetActive(true);
-
+        AudioHandler.Instance.PlayEffect(AudioHandler.Instance.volcanoEffect,"Volcanos");
         yield return new WaitForSeconds(5);
         Unerupt();
     }

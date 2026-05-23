@@ -71,6 +71,20 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!244 &-7271986833677390168
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: b71e9c7b83a4501418fbb2bbb6d67735
+  m_EffectName: Attenuation
+  m_MixLevel: 0c628c34a26486a459d4f61a5e17aebf
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!244 &-4697950406592752136
 AudioMixerEffectController:
   m_ObjectHideFlags: 3
@@ -142,6 +156,7 @@ AudioMixerController:
     - 1ee2a4e6e8b42ad459466a7d34bb0fa0
     - 290cf7b998488fd43891d70e6630bfda
     - 58244776071bc8c41bfedb349254ad5f
+    - f175ff6fe3d23ce41a6f667291fddbee
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -160,6 +175,7 @@ AudioMixerGroupController:
   - {fileID: 5371320777114613438}
   - {fileID: -7545517366051074488}
   - {fileID: -7500637893583711597}
+  - {fileID: 9059165551939126792}
   m_Volume: b575ce62ce860264780d911fd211af7c
   m_Pitch: f86cd92feee621541867953c0a65fbca
   m_Send: 00000000000000000000000000000000
@@ -194,9 +210,11 @@ AudioMixerSnapshotController:
   m_SnapshotID: 7a318e80c13e3f248b24f3cc11138975
   m_FloatValues:
     04c1a2724bc5fd04c8d84d374c595c8a: 0.5
+    6748c5d5a7ebcbb4987d2872c302482f: -3.290978
     1f37af76c64d9974fb243546eb1d5308: -12.873527
-    a65393b9269511a41add68866f11657c: -20.382294
+    a65393b9269511a41add68866f11657c: -14.816617
     5bc70faa4183bb4438acaac30be248e7: 3
+    8f86d28b8cc7595478796782d7e90195: 1.75
   m_TransitionOverrides: {}
 --- !u!243 &5371320777114613438
 AudioMixerGroupController:
@@ -245,3 +263,22 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!243 &9059165551939126792
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Volcanos
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: f175ff6fe3d23ce41a6f667291fddbee
+  m_Children: []
+  m_Volume: 6748c5d5a7ebcbb4987d2872c302482f
+  m_Pitch: 8f86d28b8cc7595478796782d7e90195
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -7271986833677390168}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
