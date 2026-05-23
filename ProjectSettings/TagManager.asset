@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Volcano
+  - Flood
   layers:
   - Default
   - TransparentFX

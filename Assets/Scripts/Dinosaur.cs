@@ -296,7 +296,7 @@ public class Dinosaur : MonoBehaviour
 
     private void OnCollisionEnter2D(UnityEngine.Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Volcano"))
+        if (collision.gameObject.CompareTag("Volcano") || collision.gameObject.CompareTag("Flood"))
         {
             TakeDamage(maxHealth);
         }
