@@ -335,8 +335,36 @@ public class Dinosaur : MonoBehaviour
         StartCoroutine(MigrationRoutine(duration));
     }
 
+
     private IEnumerator MigrationRoutine(float duration)
     {
+        _migrationTimeRemaining = duration;
+        Vector3 originalDirection = _migrationDirection;
+        float driftVelocity = 0f;
+
+        while (_migrationTimeRemaining > 0f)
+        {
+            driftVelocity += UnityEngine.Random.Range(-15f, 15f) * Time.deltaTime;
+            driftVelocity  = Mathf.Clamp(driftVelocity, -20f, 20f);
+
+            // Si trop dévié de la direction de départ, ramène vers elle
+            float deviation = Vector3.SignedAngle(originalDirection, _migrationDirection, Vector3.up);
+            if (Mathf.Abs(deviation) > 45f)
+                driftVelocity -= Mathf.Sign(deviation) * 15f;
+
+            _migrationDirection = Quaternion.Euler(0f, driftVelocity * Time.deltaTime, 0f) * _migrationDirection;
+            _migrationDirection.Normalize();
+
+            _migrationTimeRemaining -= Time.deltaTime;
+            yield return null;
+        }
+
+        _isMigrating = false;
+        EnterWander();
+    }
+/*
+    private IEnumerator MigrationRoutine(float duration)
+    {//nice but circle
         _migrationTimeRemaining = duration;
         float driftAngle = 0f;
         float driftTarget = UnityEngine.Random.Range(-30f, 30f); // où il veut aller
@@ -357,7 +385,7 @@ public class Dinosaur : MonoBehaviour
 
         _isMigrating = false;
         EnterWander();
-    }
+    }*/
 /*
     private IEnumerator MigrationRoutine(float duration)
     {
