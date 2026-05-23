@@ -10,7 +10,7 @@ public class Dinosaur : MonoBehaviour
 {
     public static event Action<Vector3> OnDinoSpawnRequested;
 
-    public static event Action<Vector3, int> OnDinoSoulDropped;
+    //public static event Action<Vector3, int> OnDinoSoulDropped;
 
 
     [Header("Mouvement")]
@@ -58,7 +58,7 @@ public class Dinosaur : MonoBehaviour
     private Rigidbody       _rb;
 
 
-        private void Awake()
+    private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
 
@@ -218,7 +218,8 @@ public class Dinosaur : MonoBehaviour
         _state              =DinoState.Dead;
         _rb.linearVelocity  =Vector3.zero;
 
-        OnDinoSoulDropped?.Invoke(transform.position, soulValue);
+        DynoSoulsEvents.DinoKill(transform.position); //animation of coins
+        DynoSoulsEvents.GainCoins(soulValue);
 
         StartCoroutine(DeathCleanup());
     }
@@ -237,6 +238,13 @@ public class Dinosaur : MonoBehaviour
 
     public bool IsDead => _state == DinoState.Dead;
     public int  Health => _currentHealth;
+
+    [ContextMenu("Test Kill")]
+    private void TestKill() => Kill();
+
+    [ContextMenu("Test Damage")]  
+    private void TestDamage() => TakeDamage(1);
+
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
