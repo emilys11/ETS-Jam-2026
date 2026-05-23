@@ -32,10 +32,7 @@ public class PlayerSpawner : MonoBehaviour
     public void SpawnMeteorite()
     {
         Meteorite newMeteorite = Instantiate(meteoritePrefab, RandomPointInBounds(), Quaternion.identity);
-
-        Vector3 targetPosition = player.Target.transform.position;
-        targetPosition.y = 0.0f;
-        newMeteorite.TargetPos = targetPosition;
+        newMeteorite.TargetPos = player.Target.transform.position;
     }
 
     public Player Player { set => player = value; }

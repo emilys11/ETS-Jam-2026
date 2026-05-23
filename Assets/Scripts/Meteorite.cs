@@ -8,25 +8,24 @@ public class Meteorite : MonoBehaviour
     [SerializeField] float fallingSpeed = 40.0f;
     [SerializeField] float crashingSpeed = 1.0f;
 
-    SphereCollider crashCollider;
-    MeshRenderer meshRenderer;
+    CircleCollider2D crashCollider;
+    SpriteRenderer renderer;
 
     float minCrashRadius;
-    Vector3 initialPos;
     Vector3 targetPos;
-    float totalDistanceToTravel;
     bool isCrashing = false;
     float crashingTimePercentage = 0.0f;
 
     void Start()
     {
-        crashCollider = GetComponent<SphereCollider>();
+        crashCollider = GetComponent<CircleCollider2D>();
+        minCrashRadius *= meteoriteSize;
         crashCollider.radius = minCrashRadius;
+        crashCollider.enabled = false;
 
-        meshRenderer = GetComponent<MeshRenderer>();
+        renderer = GetComponent<SpriteRenderer>();
 
-        initialPos = transform.position;
-        totalDistanceToTravel = Vector3.Distance(new Vector3(targetPos.x, 0.0f, targetPos.z), new Vector3(initialPos.x, 0.0f, initialPos.z));
+        gameObject.transform.localScale *= meteoriteSize;
     }
 
     void Update()
@@ -45,18 +44,11 @@ public class Meteorite : MonoBehaviour
     {
         float step = fallingSpeed * Time.deltaTime;
 
-        transform.position = Vector3.MoveTowards(transform.position, new Vector3(targetPos.x, transform.position.y, targetPos.z), step);
-        float lerpedPosY = Mathf.Lerp(
-            initialPos.y,
-            targetPos.y,
-            Vector3.Distance(
-                new Vector3(initialPos.x, 0.0f, initialPos.z),
-                new Vector3(transform.position.x, 0.0f, transform.position.z)
-            ) / totalDistanceToTravel
-        );
-        transform.position = new Vector3(transform.position.x, lerpedPosY, transform.position.z);
+        transform.position = Vector3.MoveTowards(transform.position, targetPos, step);
+
         if (Vector3.Distance(transform.position, targetPos) <= 0.01f)
         {
+            crashCollider.enabled = true;
             InitiateCrash();
         }
     }
@@ -64,6 +56,7 @@ public class Meteorite : MonoBehaviour
     public void InitiateCrash()
     {
         isCrashing = true;
+        renderer.enabled = false;
     }
 
     void Crash()
@@ -79,17 +72,9 @@ public class Meteorite : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider collider)
     {
-        Debug.Log(other.gameObject.name);
-        if (!isCrashing)
-        {
-            if (other.gameObject.layer == LayerMask.GetMask("Terrain"))
-            {
-                InitiateCrash();
-                meshRenderer.enabled = false;
-            }
-        }
+        Debug.Log(collider.gameObject.name);
     }
 
     public Vector3 TargetPos { set => targetPos = value; }

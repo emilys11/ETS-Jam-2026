@@ -5,13 +5,13 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [SerializeField] float cameraSpeed = 10.0f;
-    [SerializeField] Collider worldBorderCollider;
     [SerializeField] PlayerSpawner spawner;
-    [SerializeField] GameObject target;
+    [SerializeField] Rigidbody target;
+
+    Rigidbody rb;
 
     Vector4 worldBounds;
 
-    Rigidbody rb;
     
     InputActions controls;
     InputAction moveAction;
@@ -23,25 +23,19 @@ public class Player : MonoBehaviour
 
         spawner.Player = this;
 
-        Bounds bounds = worldBorderCollider.bounds;
-        worldBounds = new Vector4(
-            bounds.center.x - bounds.extents.x,
-            bounds.center.x + bounds.extents.x,
-            bounds.center.y - bounds.extents.y,
-            bounds.center.y + bounds.extents.y
-        );
+        worldBounds = new Vector4(-1000.0f, 1000.0f, -1000.0f, 1000.0f);
     }
 
     void Update()
     {
-        MoveCamera();
+        MoveTarget();
         CheckBounds();
     }
 
-    void MoveCamera()
+    void MoveTarget()
     {
         Vector2 movement = moveAction.ReadValue<Vector2>();
-        rb.linearVelocity = new Vector3(movement.x, 0.0f, movement.y) * cameraSpeed;
+        target.linearVelocity = movement * cameraSpeed;
     }
 
     void CheckBounds()
@@ -81,5 +75,5 @@ public class Player : MonoBehaviour
         attackAction.performed -= Attack;
     }
 
-    public GameObject Target { get => target;}
+    public Rigidbody Target { get => target;}
 }
