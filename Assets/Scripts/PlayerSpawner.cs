@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,9 +8,6 @@ public class PlayerSpawner : MonoBehaviour
     Player player;
     Collider spawnArea;
 
-    Dictionary<Meteorite, Vector3> meteoriteList = new Dictionary<Meteorite, Vector3>();
-    float meteoriteSpeed = 30.0f;
-
     void Start()
     {
         spawnArea = GetComponent<Collider>();
@@ -19,13 +15,7 @@ public class PlayerSpawner : MonoBehaviour
 
     void Update()
     {
-        float step = meteoriteSpeed * Time.deltaTime;
-
-        foreach (KeyValuePair<Meteorite, Vector3> entry in meteoriteList)
-        {
-            Debug.Log(entry.Value);
-            entry.Key.transform.position = Vector3.MoveTowards(entry.Key.transform.position, entry.Value, step);
-        }
+        
     }
 
     // https://discussions.unity.com/t/pick-random-point-inside-box-collider/708849
@@ -42,7 +32,10 @@ public class PlayerSpawner : MonoBehaviour
     public void SpawnMeteorite()
     {
         Meteorite newMeteorite = Instantiate(meteoritePrefab, RandomPointInBounds(), Quaternion.identity);
-        meteoriteList.Add(newMeteorite, player.Target.transform.position);
+
+        Vector3 targetPosition = player.Target.transform.position;
+        targetPosition.y = 0.0f;
+        newMeteorite.TargetPos = targetPosition;
     }
 
     public Player Player { set => player = value; }
