@@ -17,10 +17,12 @@ using UnityEngine.Audio;
         [SerializeField] private AudioClip gameMusic;
 
         [Header("Main Menu Audio")]
-        [SerializeField] private AudioClip selectEffect;
+        [SerializeField] public AudioClip selectEffect;
 
         [Header("Game Audio")]
         [SerializeField] public AudioClip spawnEffect;
+        [SerializeField] public AudioClip deathEffect;
+        [SerializeField] public AudioClip meteorLanding;
 
 
     private void Awake()
@@ -40,7 +42,7 @@ using UnityEngine.Audio;
             DontDestroyOnLoad(gameObject.transform);
             SetMusicSource(musicSource, gameMusic);
             musicSource.Play();
-            musicSource.Pause();
+            //musicSource.Pause();
         }
 
         private void ChangeAudioSource(AudioSource source, bool forceRestart = false)
