@@ -4499,6 +4499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
   babyBoomDuration: 30
+  migrationDelay: 15
 --- !u!4 &559430981
 Transform:
   m_ObjectHideFlags: 0
@@ -164307,8 +164308,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f648903bf633c2a44b3ecd6248878805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnManager
-  objectToSpawn: {fileID: 6350984886047275468, guid: 9ac5ee30972a4c64ea50360d71130cbd, type: 3}
-  tempMap: {fileID: 0}
+  dinoToSpawn: {fileID: 1555721082614311146, guid: 9ac5ee30972a4c64ea50360d71130cbd, type: 3}
+  megaToSpawn: {fileID: 1555721082614311146, guid: f7e8f756e3dd81946a42e5ee77e9a3b0, type: 3}
+  megaSpawnStartTime: 90
+  megaSpawnCountMin: 1
+  megaSpawnCountMax: 4
+  megaSpawnInterval: 15
+  _spawnRate: 40
+  _timer: 0
 --- !u!4 &1026608544
 Transform:
   m_ObjectHideFlags: 0
