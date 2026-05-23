@@ -149,8 +149,7 @@ public class Dinosaur : MonoBehaviour
     private void MoveTowardTarget()
     {
         Vector3 dir = _wanderTarget - transform.position;
-        dir.y = 0f;
-        if (dir.sqrMagnitude < 0.01f) return;
+        if (dir.sqrMagnitude < 1f) return;
 
         dir.Normalize();
         _rb.linearVelocity = dir * moveSpeed;
@@ -191,8 +190,8 @@ public class Dinosaur : MonoBehaviour
             _meetingCooldowns[other] = meetingCooldown;
             _meetingCount++;
 
-            //if(_meetingCount >= meetingsToReproduce)
-                //TriggerReproduction();
+            if (_meetingCount >= meetingsToReproduce)
+                TriggerReproduction();
         }
     }
     private void UpdateMeetingCooldowns()
