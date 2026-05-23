@@ -8,7 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class Dinosaur : MonoBehaviour
 {
-    public static event Action<Vector3> OnDinoSpawnRequested;
+    public static event Action<Vector3, Dinosaur> OnDinoSpawnRequested;
 
     //public static event Action<Vector3, int> OnDinoSoulDropped;
 
@@ -30,7 +30,7 @@ public class Dinosaur : MonoBehaviour
 
 
     [Header("Reproduction")]
-    [SerializeField] private int meetingsToReproduce    =3;
+    [SerializeField] private int meetingsToReproduce    =8;
     [SerializeField] private float meetingRadius        =1.5f;
     [SerializeField] private float meetingCooldown      =5f; //per dino
     [SerializeField] private float reproductionCooldown =20f; //after having a baby
@@ -58,6 +58,22 @@ public class Dinosaur : MonoBehaviour
     private Rigidbody       _rb;
 
 
+    private int   _baseMeetingsToReproduce;
+    private float _baseReproductionCooldown;
+    private float _baseMeetingCooldown;
+    private bool  _inBabyBoom;
+    private Dinosaur _parent; //lets not nuke the arcade
+    private List<Dinosaur> _children = new(); //again man 
+    public void SetParent(Dinosaur parent)
+    {
+        _parent = parent;
+    }
+    public void AddChild(Dinosaur child)
+    {
+        _children.Add(child);
+    }
+
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -67,6 +83,13 @@ public class Dinosaur : MonoBehaviour
                         | RigidbodyConstraints.FreezePositionY;
 
         _currentHealth = maxHealth;
+
+        _baseMeetingsToReproduce  = meetingsToReproduce;
+        _baseReproductionCooldown = reproductionCooldown;
+        _baseMeetingCooldown      = meetingCooldown;
+
+        _onReproductionCooldown   = true;
+        StartCoroutine(ReproductionCooldownRoutine());
     }
 
     private void Start()
@@ -154,6 +177,8 @@ public class Dinosaur : MonoBehaviour
 
             Dinosaur other = hit.GetComponent<Dinosaur>();
             if(other == null || other.IsDead) continue;
+            if(other == _parent) continue;
+            if(_children.Contains(other)) continue;
 
             if(_meetingCooldowns.ContainsKey(other)) continue;
 
@@ -191,7 +216,7 @@ public class Dinosaur : MonoBehaviour
             UnityEngine.Random.Range(-1f,1f)
             );
 
-        OnDinoSpawnRequested?.Invoke(spawnPos);
+        OnDinoSpawnRequested?.Invoke(spawnPos, this);
 
         StartCoroutine(ReproductionCooldownRoutine());
     }
@@ -229,6 +254,26 @@ public class Dinosaur : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void StartBabyBoom(float duration)
+    {
+        if (_inBabyBoom) return;
+        StartCoroutine(BabyBoomRoutine(duration));
+    }
+
+    private IEnumerator BabyBoomRoutine(float duration)
+    {
+        _inBabyBoom           = true;
+        meetingsToReproduce   = 1;
+        reproductionCooldown  = 3f;
+        meetingCooldown       = 1f;
+
+        yield return new WaitForSeconds(duration);
+
+        meetingsToReproduce   = _baseMeetingsToReproduce;
+        reproductionCooldown  = _baseReproductionCooldown;
+        meetingCooldown       = _baseMeetingCooldown;
+        _inBabyBoom           = false;
+    }
 
     //private IEnumerator AgeRoutine()
     //{
