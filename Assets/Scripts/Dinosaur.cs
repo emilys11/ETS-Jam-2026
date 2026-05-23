@@ -37,7 +37,7 @@ public class Dinosaur : MonoBehaviour
 
 
     [Header("Health")]
-    [SerializeField] private int maxHealth              =3;
+    [SerializeField] protected int maxHealth            =3;
     [SerializeField] private int soulValue              =1; //in a good world it would be 0, >:(
 
 
@@ -74,7 +74,7 @@ public class Dinosaur : MonoBehaviour
     }
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody>();
 
@@ -101,7 +101,7 @@ public class Dinosaur : MonoBehaviour
         //    return;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (_state == DinoState.Dead) return;
 
@@ -275,6 +275,17 @@ public class Dinosaur : MonoBehaviour
         _inBabyBoom           = false;
     }
 
+    public void ReduceCooldowns(float amount)
+    {
+        foreach(var key in new List<Dinosaur>(_meetingCooldowns.Keys))
+        {
+            _meetingCooldowns[key] = Mathf.Max(0f, _meetingCooldowns[key] - amount);
+            //Debug.Log($"{gameObject.name} cooldown avec {key.name}: {_meetingCooldowns[key]}");
+        }
+
+        //Debug.Log($"{gameObject.name} cooldowns reduced by {amount}");
+    }
+
     //private IEnumerator AgeRoutine()
     //{
     //    yield return new WaitForSeconds(lifespan);
@@ -291,7 +302,7 @@ public class Dinosaur : MonoBehaviour
     private void TestDamage() => TakeDamage(1);
 
 #if UNITY_EDITOR
-    private void OnDrawGizmosSelected()
+    protected virtual void OnDrawGizmosSelected()
     {
          Gizmos.color = Color.cyan;
         Gizmos.DrawLine(transform.position, _wanderTarget);
