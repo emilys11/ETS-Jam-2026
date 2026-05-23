@@ -6,6 +6,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GameObject objectToSpawn;
     [SerializeField] GameObject tempMap; //TEMPORARY, WAIT FOR REAL MAP
     GameManager gameManager;
+    AudioHandler audioHandler;
 
     private float spawnRate = 1f;
     private float timer = 0f;
@@ -13,6 +14,7 @@ public class SpawnManager : MonoBehaviour
     private void Start()
     {
         gameManager = GameManager.Instance;
+        audioHandler = AudioHandler.Instance;
     }
 
     private void Update()
@@ -38,6 +40,7 @@ public class SpawnManager : MonoBehaviour
     private void SpawnDinosaur()
     {
         GameObject go = Instantiate(objectToSpawn, GetSpawnPosition(), Quaternion.identity);
+        audioHandler.PlayEffect(audioHandler.spawnEffect,"spawns");
     }
 
     private Vector3 GetSpawnPosition() 
