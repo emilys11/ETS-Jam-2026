@@ -8,23 +8,27 @@ public class SpawnManager : MonoBehaviour
     GameManager gameManager;
     AudioHandler audioHandler;
 
-    private float spawnRate = 1f;
+    private float spawnRate = 40f;
     private float timer = 0f;
 
     private void OnEnable()
     {
         Dinosaur.OnDinoSpawnRequested   += SpawnDinosaurAt;
-        DynoSoulsEvents.OnDinoKill      -= OnDinoDied;
+        DynoSoulsEvents.OnDinoKill      += OnDinoDied;
     }
     private void OnDisable()
     {
         Dinosaur.OnDinoSpawnRequested   -= SpawnDinosaurAt;
         DynoSoulsEvents.OnDinoKill      -= OnDinoDied;
     }
-    private void SpawnDinosaurAt(Vector3 pos)
+    private void SpawnDinosaurAt(Vector3 pos, Dinosaur parent)
     {
-        Instantiate(objectToSpawn, pos, Quaternion.identity);
-        audioHandler.PlayEffect(audioHandler.spawnEffect, "spawns");
+        GameObject go = Instantiate(objectToSpawn, pos, Quaternion.identity);
+        
+        go.GetComponent<Dinosaur>().SetParent(parent);
+        parent.AddChild(go.GetComponent<Dinosaur>());
+
+        //audioHandler.PlayEffect(audioHandler.spawnEffect, "spawns");
 
         int dinosAlive =  gameManager.GetDinosAlive();
         gameManager.SetDinosAlive(dinosAlive + 1);
@@ -54,7 +58,9 @@ public class SpawnManager : MonoBehaviour
     
     private void IncrementSpawnRateWithTime()
     {
-        spawnRate = Mathf.Pow((1/gameManager.GetgameTime),0.35f)*3f;
+        float t = Mathf.Max(gameManager.GetgameTime, 1f);
+        spawnRate = Math.Max(5f, 40f/ (t * 0.05f +1));
+        //spawnRate = Mathf.Pow((1/gameManager.GetgameTime),0.35f)*3f;
         int dinosAlive = gameManager.GetDinosAlive();
         dinosAlive += 1;
         gameManager.SetDinosAlive((dinosAlive));
@@ -64,7 +70,7 @@ public class SpawnManager : MonoBehaviour
     private void SpawnDinosaur()
     {
         GameObject go = Instantiate(objectToSpawn, GetSpawnPosition(), Quaternion.identity);
-        audioHandler.PlayEffect(audioHandler.spawnEffect,"spawns");
+        //audioHandler.PlayEffect(audioHandler.spawnEffect,"spawns");
     }
 
     private Vector3 GetSpawnPosition() 
