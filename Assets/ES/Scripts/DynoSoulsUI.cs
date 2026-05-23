@@ -1,32 +1,33 @@
 using UnityEngine;
 using TMPro;
 
+
 public class DynoSoulsUI : MonoBehaviour
 {
+    [Header("Text settings")]
     public TextMeshProUGUI amountText;
-    public Sprite dynoSoulSprite;
+
+    
 
     void OnEnable()
     {
-        DynoSoulsEvents.OnGainCoins += UpdateAmount;
-        DynoSoulsEvents.OnSpendCoins += UpdateAmount;
-        DynoSoulsEvents.OnResetCoins += ResetAmount;
+        DynoSoulsEvents.OnUpdateUI += UpdateAmount;
     }
 
     void OnDisable()
     {
-        DynoSoulsEvents.OnGainCoins -= UpdateAmount;
-        DynoSoulsEvents.OnSpendCoins -= UpdateAmount;
-        DynoSoulsEvents.OnResetCoins -= ResetAmount;
+        DynoSoulsEvents.OnUpdateUI += UpdateAmount;
     }
 
-    public void ResetAmount()
+    // AMOUNT TEXT RELATED -------------------------------------------------------------------------------------------
+
+
+    public void UpdateAmount()
     {
-        amountText.text = DynoSoulsManager.startAmount.ToString();
+        Debug.Log("UpdateAmount called");
+        amountText.text = DynoSoulsManager.currentAmount.ToString();
+
     }
 
-    public void UpdateAmount(int extraAmount)
-    {
-        amountText.text = DynoSoulsManager.currentAmount.ToString() + extraAmount.ToString();
-    }
+
 }
