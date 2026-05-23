@@ -40,6 +40,18 @@ public class Dinosaur : MonoBehaviour
     [SerializeField] protected int maxHealth            =3;
     [SerializeField] private int soulValue              =1; //in a good world it would be 0, >:(
 
+    
+    [Header("Migration")]
+    [SerializeField] private float migrationSpeed       =8f;
+    [SerializeField] private float migrationVariation   =15f;
+    [Header("Flocking")]
+    [SerializeField] private float flockFollowDistance  =6f;
+    [SerializeField] private float flockSeparationRadius =1.8f;
+    protected MegaDinosaur _flockLeader;
+    protected bool      _isMigrating;
+    protected Vector3   _migrationDirection;
+    protected float _migrationTimeRemaining;
+    public Vector3 MigrationDirection => _migrationDirection;
 
     //Lifespan / oldness later ??
 
@@ -72,6 +84,9 @@ public class Dinosaur : MonoBehaviour
     {
         _children.Add(child);
     }
+
+
+    
 
 
     protected virtual void Awake()
@@ -114,6 +129,12 @@ public class Dinosaur : MonoBehaviour
 
     private void HandleCurrentState()
     {
+        if (_isMigrating)
+        {
+            MoveTowardTarget();
+            return;
+        }
+
         switch(_state)
         {
             case DinoState.Idle:
@@ -145,12 +166,26 @@ public class Dinosaur : MonoBehaviour
 
     private void MoveTowardTarget()
     {
-        Vector3 dir = _wanderTarget - transform.position;
-        dir.y = 0f;
-        if (dir.sqrMagnitude < 0.01f) return;
+        Vector3 dir;
+        if (_isMigrating && _flockLeader != null)
+        {
+            dir = ComputeFlockSteering();
+        }
+        else if (_isMigrating)
+        { //for mega
+            dir  = _migrationDirection;
+        }
+        else
+        {
+            dir = _wanderTarget - transform.position;
+            dir.y = 0f;
+            if (dir.sqrMagnitude < 0.01f) return;
 
-        dir.Normalize();
-        _rb.linearVelocity = dir * moveSpeed;
+            dir.Normalize();
+        }
+        
+        
+        _rb.linearVelocity = dir * (_isMigrating ? migrationSpeed : moveSpeed);
 
         transform.rotation = Quaternion.Slerp(
             transform.rotation,
@@ -168,6 +203,7 @@ public class Dinosaur : MonoBehaviour
 
     private void CheckNearbyDinos()
     {
+        if(_isMigrating) return;
         if(_onReproductionCooldown) return;
 
         Collider[] hits = Physics.OverlapSphere(transform.position, meetingRadius);
@@ -285,6 +321,88 @@ public class Dinosaur : MonoBehaviour
 
         //Debug.Log($"{gameObject.name} cooldowns reduced by {amount}");
     }
+
+    public void StartMigration(Vector3 direction, float duration)
+    {
+        if (_isMigrating) return; // already in a flock
+
+        // little variations
+        float variation = UnityEngine.Random.Range(-migrationVariation, migrationVariation);
+        _migrationDirection = Quaternion.Euler(0f, variation, 0f) * direction;
+        _migrationDirection.Normalize();
+
+        _isMigrating = true;
+        StartCoroutine(MigrationRoutine(duration));
+    }
+
+    private IEnumerator MigrationRoutine(float duration)
+    {
+        _migrationTimeRemaining = duration;
+        while (_migrationTimeRemaining > 0f)
+        {
+            _migrationTimeRemaining -= Time.deltaTime;
+            yield return null;
+        }
+        _isMigrating = false;
+        EnterWander();
+    }
+
+    public void StartFlocking(MegaDinosaur leader, float duration)
+    {
+        if (_isMigrating) return;
+        _flockLeader            = leader;
+        _isMigrating            = true;
+        _migrationTimeRemaining = duration;
+        StartCoroutine(FlockingRoutine());
+    }
+
+    private IEnumerator FlockingRoutine()
+    {
+        while (_migrationTimeRemaining > 0f)
+        {
+            if (_flockLeader == null || _flockLeader.IsDead) break;
+            _migrationTimeRemaining -= Time.deltaTime;
+            yield return null;
+        }
+        _flockLeader = null;
+        _isMigrating = false;
+        EnterWander();
+    }
+
+    private Vector3 ComputeFlockSteering()
+    {
+        Vector3 toLeader = _flockLeader.transform.position - transform.position;
+        toLeader.y = 0f;
+        float dist = toLeader.magnitude;
+
+        // Séparation : éviter de stacker sur les autres dinos
+        Vector3 sep = Vector3.zero;
+        int sepCount = 0;
+        Collider[] nearby = Physics.OverlapSphere(transform.position, flockSeparationRadius);
+        foreach (Collider c in nearby)
+        {
+            if (c.gameObject == gameObject) continue;
+            if (!c.TryGetComponent<Dinosaur>(out _)) continue;
+            Vector3 away = transform.position - c.transform.position;
+            away.y = 0f;
+            if (away.sqrMagnitude > 0f)
+                sep += away.normalized / Mathf.Max(away.magnitude, 0.1f);
+            sepCount++;
+        }
+        if (sepCount > 0) sep /= sepCount;
+
+        Vector3 steering;
+        if (dist > flockFollowDistance)
+            // Trop loin du leader : le rattraper (cohésion forte)
+            steering = toLeader.normalized * 0.8f + sep.normalized * 0.2f;
+        else
+            // En formation : suivre la direction du leader + éviter les voisins
+            steering = _flockLeader.MigrationDirection * 0.6f + sep.normalized * 0.4f;
+
+        steering.y = 0f;
+        return steering.sqrMagnitude > 0.01f ? steering.normalized : _flockLeader.MigrationDirection;
+    }
+
 
     //private IEnumerator AgeRoutine()
     //{

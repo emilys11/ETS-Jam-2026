@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class MegaDinosaur : Dinosaur
@@ -9,7 +9,11 @@ public class MegaDinosaur : Dinosaur
     [SerializeField] private float  auraCooldownReduction   = 50f;//0.5f;
     [SerializeField] private float  reproductionPenalty     = 5f;
 
-    private List<Dinosaur> _dinosInAura = new(); //aura so cool it makes dinos cool man, truly insane aura man
+    [Header("Migration")]
+    [SerializeField] private float migrationDelay           = 15f; //seconds after spawn to trigger it
+    [SerializeField] private float migrationDuration        = 20f;
+
+    private System.Collections.Generic.List<Dinosaur> _dinosInAura = new(); //aura so cool it makes dinos cool man, truly insane aura man
 
     
     protected override void Awake()
@@ -38,16 +42,32 @@ public class MegaDinosaur : Dinosaur
             if (hit.gameObject == gameObject) continue;
 
             Dinosaur other = hit.GetComponent<Dinosaur>();
-            if(other == null || other.IsDead) continue;
+            if(other == null || other.IsDead || other is MegaDinosaur) continue;
 
-            if(other is MegaDinosaur) continue;
 
             _dinosInAura.Add(other);
             other.ReduceCooldowns(auraCooldownReduction * Time.deltaTime);
+            if(_isMigrating)
+                other.StartFlocking(this, _migrationTimeRemaining);
         }
-
+        
         //Debug.Log($"Mega aura: {_dinosInAura.Count} dinos affected");
     }
+
+
+    public void InitiateMigration()
+    {
+        //random dir
+        Vector2 rand = UnityEngine.Random.insideUnitCircle.normalized;
+        Vector3 direction = new Vector3(rand.x, 0f, rand.y);
+
+    
+        StartMigration(direction, migrationDuration);
+
+        Debug.Log($"Mega {gameObject.name} has initiated migration towards {direction}");
+    }
+
+
 #if UNITY_EDITOR
     protected override void OnDrawGizmosSelected()
     {
