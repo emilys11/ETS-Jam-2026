@@ -338,6 +338,30 @@ public class Dinosaur : MonoBehaviour
     private IEnumerator MigrationRoutine(float duration)
     {
         _migrationTimeRemaining = duration;
+        float driftAngle = 0f;
+        float driftTarget = UnityEngine.Random.Range(-30f, 30f); // où il veut aller
+
+        while (_migrationTimeRemaining > 0f)
+        {
+            // Drift qui glisse vers sa cible, puis la cible change lentement
+            driftTarget += UnityEngine.Random.Range(-8f, 8f) * Time.deltaTime;
+            driftTarget  = Mathf.Clamp(driftTarget, -40f, 40f);
+            driftAngle   = Mathf.Lerp(driftAngle, driftTarget, Time.deltaTime * 0.5f);
+
+            _migrationDirection = Quaternion.Euler(0f, driftAngle * Time.deltaTime, 0f) * _migrationDirection;
+            _migrationDirection.Normalize();
+
+            _migrationTimeRemaining -= Time.deltaTime;
+            yield return null;
+        }
+
+        _isMigrating = false;
+        EnterWander();
+    }
+/*
+    private IEnumerator MigrationRoutine(float duration)
+    {
+        _migrationTimeRemaining = duration;
         while (_migrationTimeRemaining > 0f)
         {
             _migrationTimeRemaining -= Time.deltaTime;
@@ -346,6 +370,7 @@ public class Dinosaur : MonoBehaviour
         _isMigrating = false;
         EnterWander();
     }
+*/
 
     public void StartFlocking(MegaDinosaur leader, float duration)
     {

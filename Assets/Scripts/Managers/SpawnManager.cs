@@ -41,7 +41,7 @@ public class SpawnManager : MonoBehaviour
     {
         _gameManager  = GameManager.Instance;
         _audioHandler = AudioHandler.Instance;
-        _waveManager  = FindObjectOfType<WaveManager>();
+        _waveManager  = FindAnyObjectByType<WaveManager>();
     }
 
     private void Update()
