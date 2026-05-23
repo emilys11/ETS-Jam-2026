@@ -16,7 +16,7 @@ public class DynoSoulsUI : MonoBehaviour
 
     void OnDisable()
     {
-        DynoSoulsEvents.OnUpdateUI += UpdateAmount;
+        DynoSoulsEvents.OnUpdateUI -= UpdateAmount; //was +=
     }
 
     // AMOUNT TEXT RELATED -------------------------------------------------------------------------------------------
