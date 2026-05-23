@@ -61,6 +61,18 @@ public class GameManager : MonoBehaviour
         {
             EnterLoseState();
         }
+
+
+    }
+
+    public void IncrementDinosKilled() 
+    {
+        dinosKilled += 1;
+    }
+
+    public void IncrementDinosAlive() 
+    {
+
     }
    
     

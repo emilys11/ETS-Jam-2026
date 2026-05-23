@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] GameObject objectToSpawn;
+    [SerializeField] Dinosaur objectToSpawn;
     [SerializeField] GameObject tempMap; //TEMPORARY, WAIT FOR REAL MAP
     GameManager gameManager;
     AudioHandler audioHandler;
@@ -51,7 +51,7 @@ public class SpawnManager : MonoBehaviour
         if (timer >= spawnRate)
         {
             IncrementSpawnRateWithTime();
-            SpawnDinosaur();
+            SpawnDinosaurAt(GetSpawnPosition());
             timer = 0f;
         }
     }
@@ -64,21 +64,14 @@ public class SpawnManager : MonoBehaviour
         int dinosAlive = gameManager.GetDinosAlive();
         dinosAlive += 1;
         gameManager.SetDinosAlive((dinosAlive));
-        Debug.Log(spawnRate);
     }
     
-    private void SpawnDinosaur()
-    {
-        GameObject go = Instantiate(objectToSpawn, GetSpawnPosition(), Quaternion.identity);
-        //audioHandler.PlayEffect(audioHandler.spawnEffect,"spawns");
-    }
-
     private Vector3 GetSpawnPosition() 
     {
-        float randomX = UnityEngine.Random.Range(-100f,100f);
-        float randomZ = UnityEngine.Random.Range(-100f, 100f);
+        float randomX = UnityEngine.Random.Range(-10f,10f);
+        float randomY = UnityEngine.Random.Range(-10f, 10f);
 
-        Vector3 spawnPos = new Vector3(randomX, 0f, randomZ);
+        Vector3 spawnPos = new Vector3(randomX, randomY, 0f);
 
         return spawnPos;
     }
