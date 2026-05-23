@@ -54,7 +54,7 @@ public class SpawnManager : MonoBehaviour
     
     private void IncrementSpawnRateWithTime()
     {
-        spawnRate = (2f/gameManager.GetgameTime);
+        spawnRate = Mathf.Pow((1/gameManager.GetgameTime),0.35f)*3f;
         int dinosAlive = gameManager.GetDinosAlive();
         dinosAlive += 1;
         gameManager.SetDinosAlive((dinosAlive));
