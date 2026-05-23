@@ -65,6 +65,9 @@ public class Dinosaur : MonoBehaviour
     private bool  _inBabyBoom;
     private Dinosaur _parent; //lets not nuke the arcade
     private List<Dinosaur> _children = new(); //again man 
+
+    [SerializeField] private Sprite[] dinoSprites = new Sprite[4];
+
     public void SetParent(Dinosaur parent)
     {
         _parent = parent;
@@ -79,6 +82,9 @@ public class Dinosaur : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _sr = GetComponent<SpriteRenderer>();
+
+        _sr.sprite = dinoSprites[UnityEngine.Random.Range(0, 4)];
+
         _currentHealth = maxHealth;
 
         _baseMeetingsToReproduce  = meetingsToReproduce;
