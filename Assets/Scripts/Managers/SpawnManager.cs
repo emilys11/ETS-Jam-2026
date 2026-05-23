@@ -8,7 +8,7 @@ public class SpawnManager : MonoBehaviour
     GameManager gameManager;
     AudioHandler audioHandler;
 
-    private float spawnRate = 2f;
+    private float spawnRate = 1f;
     private float timer = 0f;
 
     private void OnEnable()
@@ -63,9 +63,9 @@ public class SpawnManager : MonoBehaviour
 
     private void IncrementSpawnRateWithTime()
     {
-        float t = Mathf.Max(gameManager.GetgameTime, 1f);
-        spawnRate = Math.Max(5f, 40f/ (t * 0.05f +1));
-        //spawnRate = Mathf.Pow((1/gameManager.GetgameTime),0.35f)*3f;
+        //float t = Mathf.Max(gameManager.GetgameTime, 1f);
+        //spawnRate = Math.Max(5f, 40f/ (t * 0.05f +1));
+        spawnRate = Mathf.Pow((1/gameManager.GetgameTime),0.35f)*3f;
         int dinosAlive = gameManager.GetDinosAlive();
         dinosAlive += 1;
         gameManager.SetDinosAlive((dinosAlive));
