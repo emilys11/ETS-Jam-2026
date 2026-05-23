@@ -3,16 +3,46 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] GameObject objectToSpawn;
+    [SerializeField] Dinosaur objectToSpawn;
     [SerializeField] GameObject tempMap; //TEMPORARY, WAIT FOR REAL MAP
     GameManager gameManager;
+    AudioHandler audioHandler;
 
     private float spawnRate = 1f;
     private float timer = 0f;
 
+    private void OnEnable()
+    {
+        Dinosaur.OnDinoSpawnRequested   += SpawnDinosaurAt;
+        DynoSoulsEvents.OnDinoKill      += OnDinoDied;
+    }
+    private void OnDisable()
+    {
+        Dinosaur.OnDinoSpawnRequested   -= SpawnDinosaurAt;
+        DynoSoulsEvents.OnDinoKill      -= OnDinoDied;
+    }
+    private void SpawnDinosaurAt(Vector3 pos, Dinosaur parent)
+    {
+        Dinosaur go = Instantiate(objectToSpawn, pos, Quaternion.identity);
+        
+        go.GetComponent<Dinosaur>().SetParent(parent);
+        parent.AddChild(go.GetComponent<Dinosaur>());
+
+        //audioHandler.PlayEffect(audioHandler.spawnEffect, "spawns");
+
+        int dinosAlive =  gameManager.GetDinosAlive();
+        gameManager.SetDinosAlive(dinosAlive + 1);
+    }
+    private void OnDinoDied(Vector3 _)
+    {
+        int dinosAlive = gameManager.GetDinosAlive();
+        gameManager.SetDinosAlive(dinosAlive - 1);
+    }
+
     private void Start()
     {
         gameManager = GameManager.Instance;
+        audioHandler = AudioHandler.Instance;
     }
 
     private void Update()
@@ -25,27 +55,31 @@ public class SpawnManager : MonoBehaviour
             timer = 0f;
         }
     }
-    
+
+    private void SpawnDinosaur()
+    {
+        Instantiate(objectToSpawn, GetSpawnPosition(), Quaternion.identity);
+        audioHandler.PlayEffect(audioHandler.spawnEffect, "spawns");
+    }
+
     private void IncrementSpawnRateWithTime()
     {
-        spawnRate = (2f/gameManager.GetgameTime);
+        //float t = Mathf.Max(gameManager.GetgameTime, 1f);
+        //spawnRate = Math.Max(5f, 40f/ (t * 0.05f +1));
+        spawnRate = Mathf.Pow((1/gameManager.GetgameTime),0.35f)*3f;
         int dinosAlive = gameManager.GetDinosAlive();
         dinosAlive += 1;
         gameManager.SetDinosAlive((dinosAlive));
-        Debug.Log(spawnRate);
     }
     
-    private void SpawnDinosaur()
-    {
-        GameObject go = Instantiate(objectToSpawn, GetSpawnPosition(), Quaternion.identity);
-    }
-
     private Vector3 GetSpawnPosition() 
     {
-        float randomX = UnityEngine.Random.Range(-100f,100f);
-        float randomZ = UnityEngine.Random.Range(-100f, 100f);
 
-        Vector3 spawnPos = new Vector3(randomX, 0f, randomZ);
+        //TEMPORARY POSITIONS
+        float randomX = UnityEngine.Random.Range(5f,50f);
+        float randomY = UnityEngine.Random.Range(5f, 27f);
+
+        Vector3 spawnPos = new Vector3(randomX, randomY, 0f);
 
         return spawnPos;
     }

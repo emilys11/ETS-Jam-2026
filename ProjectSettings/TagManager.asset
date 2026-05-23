@@ -4,6 +4,8 @@
 TagManager:
   serializedVersion: 3
   tags:
+  - Volcano
+  - Flood
   - WorldBorder
   layers:
   - Default
