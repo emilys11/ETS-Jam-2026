@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Collider2D))]
 public class Dinosaur : MonoBehaviour
 {
     public static event Action<Vector3> OnDinoSpawnRequested;
@@ -55,17 +55,14 @@ public class Dinosaur : MonoBehaviour
     private bool            _onReproductionCooldown;
     private Dictionary<Dinosaur, float> _meetingCooldowns = new(); // instance ID is the key, val is time left
                     //was int, float
-    private Rigidbody       _rb;
+    private Rigidbody2D       _rb;
+    private SpriteRenderer _sr;
 
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody>();
-
-        
-        _rb.constraints = RigidbodyConstraints.FreezeRotation
-                        | RigidbodyConstraints.FreezePositionY;
-
+        _rb = GetComponent<Rigidbody2D>();
+        _sr = GetComponent<SpriteRenderer>();
         _currentHealth = maxHealth;
     }
 
@@ -129,17 +126,20 @@ public class Dinosaur : MonoBehaviour
         dir.Normalize();
         _rb.linearVelocity = dir * moveSpeed;
 
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation,
-            Quaternion.LookRotation(dir),
-            Time.deltaTime * 8f
-        );
+        if (_rb.linearVelocityX > 0f) 
+        {
+            _sr.flipX = true;
+        }
+        else if (_rb.linearVelocityX < 0f)
+        {
+            _sr.flipX = false;
+        }
     }
 
     private Vector3 PickRandomWanderTarget()
     {
         Vector2 rand = UnityEngine.Random.insideUnitCircle * wanderRadius;
-        return transform.position + new Vector3(rand.x, 0f, rand.y);
+        return transform.position + new Vector3(rand.x, rand.y, 0f);
     }
 
 
@@ -160,8 +160,8 @@ public class Dinosaur : MonoBehaviour
             _meetingCooldowns[other] = meetingCooldown;
             _meetingCount++;
 
-            if(_meetingCount >= meetingsToReproduce)
-                TriggerReproduction();
+            //if(_meetingCount >= meetingsToReproduce)
+                //TriggerReproduction();
         }
     }
     private void UpdateMeetingCooldowns()
@@ -221,12 +221,16 @@ public class Dinosaur : MonoBehaviour
         DynoSoulsEvents.DinoKill(transform.position); //animation of coins
         DynoSoulsEvents.GainCoins(soulValue);
 
+        GameManager.Instance.IncrementDinosKilled();
+        Debug.Log(GameManager.Instance.GetDinosKilled());
+
         StartCoroutine(DeathCleanup());
+        Destroy(gameObject);
     }
     private IEnumerator DeathCleanup()
     {
-        yield return new WaitForEndOfFrame();
         gameObject.SetActive(false);
+        yield return new WaitForEndOfFrame();
     }
 
 
@@ -244,6 +248,14 @@ public class Dinosaur : MonoBehaviour
 
     [ContextMenu("Test Damage")]  
     private void TestDamage() => TakeDamage(1);
+
+    private void OnCollisionEnter2D(UnityEngine.Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Volcano"))
+        {
+            TakeDamage(maxHealth);
+        }
+    }
 
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
