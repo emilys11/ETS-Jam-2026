@@ -11,6 +11,30 @@ public class SpawnManager : MonoBehaviour
     private float spawnRate = 1f;
     private float timer = 0f;
 
+    private void OnEnable()
+    {
+        Dinosaur.OnDinoSpawnRequested   += SpawnDinosaurAt;
+        DynoSoulsEvents.OnDinoKill      -= OnDinoDied;
+    }
+    private void OnDisable()
+    {
+        Dinosaur.OnDinoSpawnRequested   -= SpawnDinosaurAt;
+        DynoSoulsEvents.OnDinoKill      -= OnDinoDied;
+    }
+    private void SpawnDinosaurAt(Vector3 pos)
+    {
+        Instantiate(objectToSpawn, pos, Quaternion.identity);
+        audioHandler.PlayEffect(audioHandler.spawnEffect, "spawns");
+
+        int dinosAlive =  gameManager.GetDinosAlive();
+        gameManager.SetDinosAlive(dinosAlive + 1);
+    }
+    private void OnDinoDied(Vector3 _)
+    {
+        int dinosAlive = gameManager.GetDinosAlive();
+        gameManager.SetDinosAlive(dinosAlive - 1);
+    }
+
     private void Start()
     {
         gameManager = GameManager.Instance;
