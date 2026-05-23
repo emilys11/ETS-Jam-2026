@@ -8,7 +8,7 @@ public class SpawnManager : MonoBehaviour
     GameManager gameManager;
     AudioHandler audioHandler;
 
-    private float spawnRate = 40f;
+    private float spawnRate = 2f;
     private float timer = 0f;
 
     private void OnEnable()
@@ -23,7 +23,7 @@ public class SpawnManager : MonoBehaviour
     }
     private void SpawnDinosaurAt(Vector3 pos, Dinosaur parent)
     {
-        GameObject go = Instantiate(objectToSpawn, pos, Quaternion.identity);
+        Dinosaur go = Instantiate(objectToSpawn, pos, Quaternion.identity);
         
         go.GetComponent<Dinosaur>().SetParent(parent);
         parent.AddChild(go.GetComponent<Dinosaur>());
@@ -51,11 +51,16 @@ public class SpawnManager : MonoBehaviour
         if (timer >= spawnRate)
         {
             IncrementSpawnRateWithTime();
-            SpawnDinosaurAt(GetSpawnPosition());
+            SpawnDinosaur();
             timer = 0f;
         }
     }
-    
+
+    private void SpawnDinosaur()
+    {
+        Instantiate(objectToSpawn, GetSpawnPosition(), Quaternion.identity);
+    }
+
     private void IncrementSpawnRateWithTime()
     {
         float t = Mathf.Max(gameManager.GetgameTime, 1f);
