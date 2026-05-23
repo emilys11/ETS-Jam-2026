@@ -59,6 +59,7 @@ public class SpawnManager : MonoBehaviour
     private void SpawnDinosaur()
     {
         Instantiate(objectToSpawn, GetSpawnPosition(), Quaternion.identity);
+        audioHandler.PlayEffect(audioHandler.spawnEffect, "spawns");
     }
 
     private void IncrementSpawnRateWithTime()
@@ -73,8 +74,10 @@ public class SpawnManager : MonoBehaviour
     
     private Vector3 GetSpawnPosition() 
     {
-        float randomX = UnityEngine.Random.Range(-10f,10f);
-        float randomY = UnityEngine.Random.Range(-10f, 10f);
+
+        //TEMPORARY POSITIONS
+        float randomX = UnityEngine.Random.Range(5f,50f);
+        float randomY = UnityEngine.Random.Range(5f, 27f);
 
         Vector3 spawnPos = new Vector3(randomX, randomY, 0f);
 

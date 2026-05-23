@@ -156,6 +156,7 @@ MonoBehaviour:
   spawnEffect: {fileID: 8300000, guid: eb5b404e6fe83af489ac03847d5564c8, type: 3}
   deathEffect: {fileID: 8300000, guid: 755dd0f6b513f0342820d5e2c0b7d8c0, type: 3}
   meteorLanding: {fileID: 8300000, guid: 4ecae6e4bc906694c9cc60db3d329aa7, type: 3}
+  volcanoEffect: {fileID: 8300000, guid: 47c68cff16b177b4aa1cfb0bc2396b86, type: 3}
   pitchSmoothSpeed: 5
 --- !u!4 &597439130
 Transform:
@@ -764,7 +765,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8138323635316229862, guid: 23251d388e8af294096049964d0ecdbe, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

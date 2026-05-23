@@ -249,6 +249,8 @@ public class Dinosaur : MonoBehaviour
         GameManager.Instance.IncrementDinosKilled();
         Debug.Log(GameManager.Instance.GetDinosKilled());
 
+        AudioHandler.Instance.PlayEffect(AudioHandler.Instance.deathEffect, "Deaths");
+
         StartCoroutine(DeathCleanup());
         Destroy(gameObject);
     }
