@@ -385,9 +385,6 @@ public class Dinosaur : MonoBehaviour
 
         if(GameManager.Instance != null)
             GameManager.Instance.IncrementDinosKilled();
-            
-        if(AudioHandler.Instance != null && AudioHandler.Instance.deathEffect != null)
-            AudioHandler.Instance.PlayEffect(AudioHandler.Instance.deathEffect, "Deaths");
 
         StartCoroutine(DeathCleanup());
         Destroy(gameObject, 0.1f);
@@ -430,6 +427,8 @@ public class Dinosaur : MonoBehaviour
         if (collision.gameObject.CompareTag("Volcano") || collision.gameObject.CompareTag("Flood"))
         {
             TakeDamage(maxHealth);
+            if (AudioHandler.Instance != null && AudioHandler.Instance.charredEffect != null)
+                AudioHandler.Instance.PlayEffect(AudioHandler.Instance.charredEffect, "CharredDeath");
         }
     }
 
