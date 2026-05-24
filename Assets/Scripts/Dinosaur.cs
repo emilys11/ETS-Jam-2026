@@ -38,7 +38,7 @@ public class Dinosaur : MonoBehaviour
 
     [Header("Health")]
     [SerializeField] private int maxHealth              =3;
-    [SerializeField] private int soulValue              =1; //in a good world it would be 0, >:(
+    [SerializeField] private int soulValue              =50; //in a good world it would be 0, >:(
 
 
     //Lifespan / oldness later ??
