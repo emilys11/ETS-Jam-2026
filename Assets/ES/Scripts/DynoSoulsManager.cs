@@ -5,6 +5,7 @@ public class DynoSoulsManager : MonoBehaviour
     public static int startAmount = 300;
     public static int passiveAmount = 10;
     public static int currentAmount;
+    public static int totalAmount;
 
     void OnEnable()
     {
@@ -32,14 +33,13 @@ public class DynoSoulsManager : MonoBehaviour
 
     public void AddCoins(int addAmount)
     {
-        Debug.Log("RemoveCoins called: "+addAmount);
         currentAmount += addAmount;
+        totalAmount += addAmount;
         DynoSoulsEvents.UpdateUI();
     }
 
     public void RemoveCoins(int remAmount)
     {
-        Debug.Log("RemoveCoins called: "+remAmount);
         currentAmount -= remAmount;
         DynoSoulsEvents.UpdateUI();
     }
@@ -52,7 +52,8 @@ public class DynoSoulsManager : MonoBehaviour
 
     void GeneratePassiveCoins()
     {
-        AddCoins(passiveAmount);
+        currentAmount += passiveAmount;
+        DynoSoulsEvents.UpdateUI();
     }
 
 }
