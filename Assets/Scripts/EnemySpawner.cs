@@ -14,7 +14,7 @@ public class EnemySpawner : MonoBehaviour
             if (gridPlane.Raycast(ray, out float enterDistance))
             {
                 Vector3 worldIntersectionPoint = ray.GetPoint(enterDistance);
-                Debug.Log(ValidSpawnHelper.Instance.ValidSpawnLocation(worldIntersectionPoint));
+                Debug.LogWarning(ValidSpawnHelper.Instance.ValidSpawnLocation(worldIntersectionPoint));
             }
         }
     }
