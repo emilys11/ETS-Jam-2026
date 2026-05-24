@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class LeaderboardEntry
@@ -63,10 +64,7 @@ public class Leaderboard : MonoBehaviour
 
     public void GoHome()
     {
-        //menuUI.SetActive(true);
-        gameObject.SetActive(false);
-        menuUI.SetActive(true);
-        mainMenuUI.SetActive(true);
+        SceneManager.LoadScene("MainSceneAdamTest");
     }
 
     public void SubmitUserInput()
