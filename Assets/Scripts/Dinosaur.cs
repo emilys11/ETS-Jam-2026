@@ -23,7 +23,7 @@ public class Dinosaur : MonoBehaviour
     [SerializeField] protected float wanderTimeMax    = 8f;
 
     [Header("Reproduction")]
-    [SerializeField] protected int meetingsToReproduce    = 8;
+    [SerializeField] protected int meetingsToReproduce    = 4;
     [SerializeField] protected float meetingRadius        = 1.5f;
     [SerializeField] protected float meetingCooldown      = 5f; 
     [SerializeField] protected float reproductionCooldown = 20f; 
@@ -46,6 +46,7 @@ public class Dinosaur : MonoBehaviour
     protected MegaDinosaur _flockLeader;
     protected bool         _isMigrating;
     protected Vector3      _migrationDirection;
+    protected Vector3      _obstacleAvoidance;
     protected float        _migrationTimeRemaining;
     public Vector3         MigrationDirection => _migrationDirection;
 
@@ -158,6 +159,12 @@ public class Dinosaur : MonoBehaviour
             if (dir.sqrMagnitude < 0.01f) return;
             dir.Normalize();
         }
+        dir += _obstacleAvoidance * 1.5f; // On dévie la direction loin du mur
+        dir.z = 0f;
+        if (dir.sqrMagnitude > 0.01f) dir.Normalize();
+
+        // On dissipe l'esquive progressivement pour qu'il reprenne sa route après le mur
+        _obstacleAvoidance = Vector3.Lerp(_obstacleAvoidance, Vector3.zero, Time.deltaTime * 5f);
 
         _rb.linearVelocity = dir * (_isMigrating ? migrationSpeed : moveSpeed);
 
@@ -393,6 +400,27 @@ public class Dinosaur : MonoBehaviour
         if (collision.gameObject.CompareTag("Volcano") || collision.gameObject.CompareTag("Flood"))
         {
             TakeDamage(maxHealth);
+        }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        // On ne rebondit pas sur les autres dinos (le flocking gère déjà ça)
+        if (collision.gameObject.TryGetComponent<Dinosaur>(out _)) return;
+
+        // On récupère "l'angle" du mur qu'on est en train de toucher
+        Vector2 normal = collision.GetContact(0).normal;
+        _obstacleAvoidance = new Vector3(normal.x, normal.y, 0f);
+
+        // Comportement intelligent pour le Wander (les petits dinos)
+        if (!_isMigrating && _state == DinoState.Wandering)
+        {
+            // Si le dino essaie d'avancer droit dans le mur (angle opposé), il annule son trajet
+            Vector3 intentDir = (_wanderTarget - transform.position).normalized;
+            if (Vector3.Dot(intentDir, _obstacleAvoidance) < -0.8f)
+            {
+                EnterIdle(); // Au lieu de frotter le mur, il s'arrête et choisira un meilleur chemin !
+            }
         }
     }
 

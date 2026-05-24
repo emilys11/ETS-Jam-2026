@@ -150,8 +150,8 @@ public class SpawnManager : MonoBehaviour
     // CORRIGÉ POUR LA 2D : Z = 0
     private Vector3 GetSpawnPosition() 
     {
-        float randomX = UnityEngine.Random.Range(-100f, 100f);
-        float randomY = UnityEngine.Random.Range(-100f, 100f); // C'était Z ici avant
+        float randomX = UnityEngine.Random.Range(5f, 50f);
+        float randomY = UnityEngine.Random.Range(5f, 27f); // C'était Z ici avant
 
         return new Vector3(randomX, randomY, 0f); // Z est figé à 0
     }
