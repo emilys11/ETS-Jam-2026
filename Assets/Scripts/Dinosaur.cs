@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
@@ -10,68 +11,81 @@ public class Dinosaur : MonoBehaviour
     public static event Action<Vector3, Dinosaur> OnDinoSpawnRequested;
 
     [Header("Mouvement")]
-    [SerializeField] protected float moveSpeed        = 3f;
-    [SerializeField] protected float wanderRadius     = 8f;
+    [SerializeField] protected float moveSpeed = 3f;
+    [SerializeField] protected float wanderRadius = 8f;
     [SerializeField] protected float arrivalThreshold = 0.4f;
 
     [Header("Idle")]
-    [SerializeField] protected float idleTimeMin      = 1.5f;
-    [SerializeField] protected float idleTimeMax      = 4f;
+    [SerializeField] protected float idleTimeMin = 1.5f;
+    [SerializeField] protected float idleTimeMax = 4f;
 
     [Header("Wander")]
-    [SerializeField] protected float wanderTimeMin    = 3f;
-    [SerializeField] protected float wanderTimeMax    = 8f;
+    [SerializeField] protected float wanderTimeMin = 3f;
+    [SerializeField] protected float wanderTimeMax = 8f;
 
     [Header("Reproduction")]
-    [SerializeField] protected int meetingsToReproduce    = 4;
-    [SerializeField] protected float meetingRadius        = 1.5f;
-    [SerializeField] protected float meetingCooldown      = 5f; 
-    [SerializeField] protected float reproductionCooldown = 20f; 
+    [SerializeField] protected int meetingsToReproduce = 4;
+    [SerializeField] protected float meetingRadius = 1.5f;
+    [SerializeField] protected float meetingCooldown = 5f;
+    [SerializeField] protected float reproductionCooldown = 20f;
 
     [Header("Health")]
-    [SerializeField] public int maxHealth              =3;
-    [SerializeField] private int soulValue              =50; //in a good world it would be 0, >:(
+    [SerializeField] public int maxHealth = 3;
+    [SerializeField] private int soulValue = 50;
 
     [Header("Migration")]
-    [SerializeField] protected float migrationSpeed       = 8f;
-    [SerializeField] protected float migrationVariation   = 15f;
-    
+    [SerializeField] protected float migrationSpeed = 8f;
+    [SerializeField] protected float migrationVariation = 15f;
+
     [Header("Flocking")]
-    [SerializeField] protected float flockFollowDistance  = 6f;
-    [SerializeField] protected float flockSeparationRadius= 1.8f;
-    
+    [SerializeField] protected float flockFollowDistance = 6f;
+    [SerializeField] protected float flockSeparationRadius = 1.8f;
+
     [Header("Visuals")]
     [SerializeField] private Sprite[] dinoSprites = new Sprite[4];
 
     protected MegaDinosaur _flockLeader;
-    protected bool         _isMigrating;
-    protected Vector3      _migrationDirection;
-    protected Vector3      _obstacleAvoidance;
-    protected Vector3      _baseMigrationDirection;
-    protected float        _migrationTimeRemaining;
-    public Vector3         MigrationDirection => _migrationDirection;
+    protected bool _isMigrating;
+    protected Vector3 _migrationDirection;
+    protected Vector3 _obstacleAvoidance;
+    protected Vector3 _baseMigrationDirection;
+    protected float _migrationTimeRemaining;
+    public Vector3 MigrationDirection => _migrationDirection;
 
     protected enum DinoState { Idle, Wandering, Dead }
 
-    protected DinoState       _state;
-    protected int             _currentHealth;
-    protected float           _stateTimer;
-    protected Vector3         _wanderTarget;
+    protected DinoState _state;
+    protected int _currentHealth;
+    protected float _stateTimer;
+    protected Vector3 _wanderTarget;
 
-    private int             _meetingCount;
-    private bool            _onReproductionCooldown;
-    private Dictionary<Dinosaur, float> _meetingCooldowns = new(); 
+    private int _meetingCount;
+    private bool _onReproductionCooldown;
+    private Dictionary<Dinosaur, float> _meetingCooldowns = new();
 
-    protected Rigidbody2D     _rb;
-    protected SpriteRenderer  _sr;
+    protected Rigidbody2D _rb;
+    protected SpriteRenderer _sr;
     protected Animator _animator;
 
-    private int   _baseMeetingsToReproduce;
+    private int _baseMeetingsToReproduce;
     private float _baseReproductionCooldown;
     private float _baseMeetingCooldown;
-    private bool  _inBabyBoom;
-    private Dinosaur _parent; //lets not nuke the arcade
-    private List<Dinosaur> _children = new(); //again man 
+    private bool _inBabyBoom;
+    private Dinosaur _parent;
+    private List<Dinosaur> _children = new();
+
+    // --- POOL EXTRA VARIABLES ---
+    private IObjectPool<Dinosaur> _originPool;
+    private Coroutine _migrationCoroutine;
+    private Coroutine _flockingCoroutine;
+    private Coroutine _reproductionCooldownCoroutine;
+    private Coroutine _babyBoomCoroutine;
+
+    public void ConfigurePool(IObjectPool<Dinosaur> pool)
+    {
+        _originPool = pool;
+    }
+
     public void SetParent(Dinosaur parent)
     {
         _parent = parent;
@@ -81,32 +95,65 @@ public class Dinosaur : MonoBehaviour
         _children.Add(child);
     }
 
-    
     private float _stuckTimer = 0f;
-    
-    
+
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _sr = GetComponent<SpriteRenderer>();
         _animator = GetComponent<Animator>();
 
-        if (dinoSprites.Length > 0)
-            _sr.sprite = dinoSprites[UnityEngine.Random.Range(0, dinoSprites.Length)];
-
-        _currentHealth = maxHealth;
-
-        _baseMeetingsToReproduce  = meetingsToReproduce;
+        _baseMeetingsToReproduce = meetingsToReproduce;
         _baseReproductionCooldown = reproductionCooldown;
-        _baseMeetingCooldown      = meetingCooldown;
-
-        _onReproductionCooldown   = true;
-        StartCoroutine(ReproductionCooldownRoutine());
+        _baseMeetingCooldown = meetingCooldown;
     }
 
-    protected virtual void Start()
+    
+    protected virtual void OnEnable()
     {
+        ResetDinoState();
+    }
+
+    
+    protected virtual void OnDisable()
+    {
+        StopAllActiveCoroutines();
+    }
+
+    private void ResetDinoState()
+    {
+        _state = DinoState.Idle;
+        _currentHealth = maxHealth;
+        _meetingCount = 0;
+        _stuckTimer = 0f;
+        _isMigrating = false;
+        _flockLeader = null;
+        _parent = null;
+
+        _children.Clear();
+        _meetingCooldowns.Clear();
+
+        if (dinoSprites.Length > 0 && _sr != null)
+            _sr.sprite = dinoSprites[UnityEngine.Random.Range(0, dinoSprites.Length)];
+
+        // Restoring baseline parameters in case a baby boom was running on death
+        meetingsToReproduce = _baseMeetingsToReproduce;
+        reproductionCooldown = _baseReproductionCooldown;
+        meetingCooldown = _baseMeetingCooldown;
+        _inBabyBoom = false;
+
+        _onReproductionCooldown = true;
+        _reproductionCooldownCoroutine = StartCoroutine(ReproductionCooldownRoutine());
+
         EnterIdle();
+    }
+
+    private void StopAllActiveCoroutines()
+    {
+        if (_migrationCoroutine != null) StopCoroutine(_migrationCoroutine);
+        if (_flockingCoroutine != null) StopCoroutine(_flockingCoroutine);
+        if (_reproductionCooldownCoroutine != null) StopCoroutine(_reproductionCooldownCoroutine);
+        if (_babyBoomCoroutine != null) StopCoroutine(_babyBoomCoroutine);
     }
 
     protected virtual void Update()
@@ -126,10 +173,11 @@ public class Dinosaur : MonoBehaviour
             MoveTowardTarget();
             return;
         }
-        switch(_state)
+        switch (_state)
         {
             case DinoState.Idle:
-                if(_stateTimer <= 0f) {
+                if (_stateTimer <= 0f)
+                {
                     EnterWander();
                 }
                 _animator.SetBool("isWandering", false);
@@ -140,7 +188,7 @@ public class Dinosaur : MonoBehaviour
                 bool arrived = Vector3.Distance(transform.position, _wanderTarget) <= arrivalThreshold;
                 if (arrived || _stateTimer <= 0f) EnterIdle();
                 _animator.SetBool("isWandering", true);
-                break;        
+                break;
         }
     }
 
@@ -148,7 +196,7 @@ public class Dinosaur : MonoBehaviour
     {
         _state = DinoState.Idle;
         _stateTimer = UnityEngine.Random.Range(idleTimeMin, idleTimeMax);
-        _rb.linearVelocity = Vector2.zero; // linearVelocity Unity 6
+        _rb.linearVelocity = Vector2.zero;
     }
 
     protected void EnterWander()
@@ -162,74 +210,53 @@ public class Dinosaur : MonoBehaviour
     private void MoveTowardTarget()
     {
         Vector3 dir;
-        // _animator.SetBool("isWandering", true);
-        if (_isMigrating && _flockLeader != null) {
+        if (_isMigrating && _flockLeader != null)
+        {
             dir = ComputeFlockSteering();
         }
-        else if (_isMigrating) {
+        else if (_isMigrating)
+        {
             dir = _migrationDirection;
         }
-        else {/*
+        else
+        {
             dir = _wanderTarget - transform.position;
-            dir.z = 0f; // On annule Z en 2D !
-            if (dir.sqrMagnitude < 0.01f) return;
-            dir.Normalize();*/
-             // COMPORTEMENT WANDER (Petits dinos)
-            dir = _wanderTarget - transform.position;
-            dir.z = 0f; 
+            dir.z = 0f;
             if (dir.sqrMagnitude < 0.01f) return;
             dir.Normalize();
 
-            // On applique la glissade douce ici !
             dir += _obstacleAvoidance * 1.5f;
             dir.z = 0f;
             if (dir.sqrMagnitude > 0.01f) dir.Normalize();
 
-            // La force de glissade s'estompe quand on s'éloigne du mur
             _obstacleAvoidance = Vector3.Lerp(_obstacleAvoidance, Vector3.zero, Time.deltaTime * 5f);
-        }/*
-        dir += _obstacleAvoidance * 1.5f; // On dévie la direction loin du mur
-        dir.z = 0f;
-        if (dir.sqrMagnitude > 0.01f) dir.Normalize();
-
-        // On dissipe l'esquive progressivement pour qu'il reprenne sa route après le mur
-        _obstacleAvoidance = Vector3.Lerp(_obstacleAvoidance, Vector3.zero, Time.deltaTime * 5f);
-        */
+        }
 
         _rb.linearVelocity = dir * (_isMigrating ? migrationSpeed : moveSpeed);
 
-        // Flip du sprite
         if (_rb.linearVelocity.x > 0f) _sr.flipX = true;
         else if (_rb.linearVelocity.x < 0f) _sr.flipX = false;
     }
 
     private Vector3 PickRandomWanderTarget()
     {
-        /*
-        Vector2 rand = UnityEngine.Random.insideUnitCircle * wanderRadius;
-        return transform.position + new Vector3(rand.x, rand.y, 0f); // X et Y pour la 2D
-    */
-
-    float randomX = UnityEngine.Random.Range(0f, 60f); 
-    float randomY = UnityEngine.Random.Range(0f, 35f); 
-    
-    return new Vector3(randomX, randomY, 0f);
-    
+        float randomX = UnityEngine.Random.Range(0f, 60f);
+        float randomY = UnityEngine.Random.Range(0f, 35f);
+        return new Vector3(randomX, randomY, 0f);
     }
 
     private void CheckNearbyDinos()
     {
-        if(_isMigrating || _onReproductionCooldown) return;
+        if (_isMigrating || _onReproductionCooldown) return;
 
-        // PHYSICS 2D ICI !
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, meetingRadius);
-        foreach(Collider2D hit in hits)
+        foreach (Collider2D hit in hits)
         {
-            if(hit.gameObject == gameObject) continue;
+            if (hit.gameObject == gameObject) continue;
 
             Dinosaur other = hit.GetComponent<Dinosaur>();
-            if(other == null || other.IsDead || other == _parent || _children.Contains(other)) continue;
-            if(_meetingCooldowns.ContainsKey(other)) continue;
+            if (other == null || other.IsDead || other == _parent || _children.Contains(other)) continue;
+            if (_meetingCooldowns.ContainsKey(other)) continue;
 
             _meetingCooldowns[other] = meetingCooldown;
             _meetingCount++;
@@ -256,12 +283,12 @@ public class Dinosaur : MonoBehaviour
 
         Vector3 spawnPos = transform.position + new Vector3(
             UnityEngine.Random.Range(-1f, 1f),
-            UnityEngine.Random.Range(-1f, 1f), // X et Y !
+            UnityEngine.Random.Range(-1f, 1f),
             0f
         );
 
         OnDinoSpawnRequested?.Invoke(spawnPos, this);
-        StartCoroutine(ReproductionCooldownRoutine());
+        _reproductionCooldownCoroutine = StartCoroutine(ReproductionCooldownRoutine());
     }
 
     private IEnumerator ReproductionCooldownRoutine()
@@ -272,25 +299,22 @@ public class Dinosaur : MonoBehaviour
 
     public void ReduceCooldowns(float amount)
     {
-        foreach(var key in new List<Dinosaur>(_meetingCooldowns.Keys))
+        foreach (var key in new List<Dinosaur>(_meetingCooldowns.Keys))
             _meetingCooldowns[key] = Mathf.Max(0f, _meetingCooldowns[key] - amount);
     }
 
-    // ========== MIGRATION & FLOCKING (Adapté 2D) ==========
-
     public void StartMigration(Vector3 direction, float duration)
     {
-        if (_isMigrating) return; 
+        if (_isMigrating) return;
 
         float variation = UnityEngine.Random.Range(-migrationVariation, migrationVariation);
-        // Rotation sur l'axe Z pour la 2D !
         _migrationDirection = Quaternion.Euler(0f, 0f, variation) * direction;
         _migrationDirection.Normalize();
 
         _baseMigrationDirection = _migrationDirection;
 
         _isMigrating = true;
-        StartCoroutine(MigrationRoutine(duration));
+        _migrationCoroutine = StartCoroutine(MigrationRoutine(duration));
     }
 
     private IEnumerator MigrationRoutine(float duration)
@@ -302,9 +326,8 @@ public class Dinosaur : MonoBehaviour
         while (_migrationTimeRemaining > 0f)
         {
             driftVelocity += UnityEngine.Random.Range(-15f, 15f) * Time.deltaTime;
-            driftVelocity  = Mathf.Clamp(driftVelocity, -20f, 20f);
+            driftVelocity = Mathf.Clamp(driftVelocity, -20f, 20f);
 
-            // Vector3.forward = axe Z en 2D !
             float deviation = Vector3.SignedAngle(originalDirection, _migrationDirection, Vector3.forward);
             if (Mathf.Abs(deviation) > 45f)
                 driftVelocity -= Mathf.Sign(deviation) * 15f;
@@ -326,7 +349,7 @@ public class Dinosaur : MonoBehaviour
         _flockLeader = leader;
         _isMigrating = true;
         _migrationTimeRemaining = duration;
-        StartCoroutine(FlockingRoutine());
+        _flockingCoroutine = StartCoroutine(FlockingRoutine());
     }
 
     private IEnumerator FlockingRoutine()
@@ -373,8 +396,6 @@ public class Dinosaur : MonoBehaviour
         return steering.sqrMagnitude > 0.01f ? steering.normalized : _flockLeader.MigrationDirection;
     }
 
-    // ========== SANTE & DEGATS ==========
-
     public void TakeDamage(int amount = 1)
     {
         if (_state == DinoState.Dead) return;
@@ -384,34 +405,37 @@ public class Dinosaur : MonoBehaviour
 
     public void Kill() => Die();
 
-   private void Die()
+    // --- REFACTORED TO INTEGRATE POOLING ---
+    private void Die()
     {
-        if(_state == DinoState.Dead) return;
+        if (_state == DinoState.Dead) return;
 
         _state = DinoState.Dead;
         _rb.linearVelocity = Vector2.zero;
 
-        // On appelle les événements statiques directement !
-        DynoSoulsEvents.DinoKill(transform.position); 
+        DynoSoulsEvents.DinoKill(transform.position);
         DynoSoulsEvents.GainCoins(soulValue);
 
-        if(GameManager.Instance != null)
+        if (GameManager.Instance != null)
             GameManager.Instance.IncrementDinosKilled();
 
-        StartCoroutine(DeathCleanup());
-        Destroy(gameObject, 0.1f);
-    }
-    
-    private IEnumerator DeathCleanup()
-    {
-        gameObject.SetActive(false);
-        yield return new WaitForEndOfFrame();
+        StopAllActiveCoroutines();
+
+        // Instead of executing a delayed cleanup and calling Destroy(), release to pool immediately
+        if (_originPool != null)
+        {
+            _originPool.Release(this);
+        }
+        else
+        {
+            Destroy(gameObject); // Fallback logic
+        }
     }
 
     public void StartBabyBoom(float duration)
     {
         if (_inBabyBoom) return;
-        StartCoroutine(BabyBoomRoutine(duration));
+        _babyBoomCoroutine = StartCoroutine(BabyBoomRoutine(duration));
     }
 
     private IEnumerator BabyBoomRoutine(float duration)
@@ -430,8 +454,7 @@ public class Dinosaur : MonoBehaviour
     }
 
     public bool IsDead => _state == DinoState.Dead;
-    public int  Health => _currentHealth;
-
+    public int Health => _currentHealth;
     public int MaxHealth { get => maxHealth; set => maxHealth = value; }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -446,7 +469,6 @@ public class Dinosaur : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
-        // On ignore les collisions entre dinos
         if (collision.gameObject.TryGetComponent<Dinosaur>(out _)) return;
 
         Vector3 normal = collision.GetContact(0).normal;
@@ -454,50 +476,26 @@ public class Dinosaur : MonoBehaviour
 
         if (_isMigrating)
         {
-            // MEGA DINO ET MIGRATION : Rebond net façon DVD
             if (Vector3.Dot(_migrationDirection, normal) < 0f)
             {
                 _migrationDirection = Vector3.Reflect(_migrationDirection, normal).normalized;
-                _baseMigrationDirection = _migrationDirection; // Met à jour la coroutine
+                _baseMigrationDirection = _migrationDirection;
             }
         }
         else if (_state == DinoState.Wandering)
         {
             Vector3 toTarget = (_wanderTarget - transform.position).normalized;
-            // Si on fonce dans le mur (produit scalaire négatif), on abandonne la cible
             if (Vector3.Dot(toTarget, normal) < -0.5f)
             {
                 EnterIdle();
             }
             else
             {
-                // Sinon on applique une glissade douce
                 _obstacleAvoidance = normal;
             }
         }
     }
-/*
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        // On ne rebondit pas sur les autres dinos (le flocking gère déjà ça)
-        if (collision.gameObject.TryGetComponent<Dinosaur>(out _)) return;
 
-        // On récupère "l'angle" du mur qu'on est en train de toucher
-        Vector2 normal = collision.GetContact(0).normal;
-        _obstacleAvoidance = new Vector3(normal.x, normal.y, 0f);
-
-        // Comportement intelligent pour le Wander (les petits dinos)
-        if (!_isMigrating && _state == DinoState.Wandering)
-        {
-            // Si le dino essaie d'avancer droit dans le mur (angle opposé), il annule son trajet
-            Vector3 intentDir = (_wanderTarget - transform.position).normalized;
-            if (Vector3.Dot(intentDir, _obstacleAvoidance) < -0.8f)
-            {
-                EnterIdle(); // Au lieu de frotter le mur, il s'arrête et choisira un meilleur chemin !
-            }
-        }
-    }
-*/
 #if UNITY_EDITOR
     protected virtual void OnDrawGizmosSelected()
     {
@@ -505,10 +503,10 @@ public class Dinosaur : MonoBehaviour
         Gizmos.DrawLine(transform.position, _wanderTarget);
 
         Gizmos.color = new Color(1f, 0.5f, 0f, 0.25f);
-        Gizmos.DrawSphere(transform.position, meetingRadius); 
+        Gizmos.DrawSphere(transform.position, meetingRadius);
 
         Gizmos.color = new Color(0f, 1f, 0f, 0.1f);
-        Gizmos.DrawSphere(transform.position, wanderRadius);  
+        Gizmos.DrawSphere(transform.position, wanderRadius);
     }
 #endif
 }

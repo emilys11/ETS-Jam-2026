@@ -1,26 +1,42 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class MegaDinosaur : Dinosaur
 {
     [Header("Mega stats")]
-    [SerializeField] private int   megaMaxHealth         = 15;
-    [SerializeField] private float auraRadius            = 8f;
+    [SerializeField] private int megaMaxHealth = 15;
+    [SerializeField] private float auraRadius = 8f;
     [SerializeField] private float auraCooldownReduction = 50f;
 
     [Header("Migration")]
-    [SerializeField] private float migrationDuration     = 20f;
+    [SerializeField] private float migrationDuration = 20f;
 
     private List<Dinosaur> _dinosInAura = new();
 
+    // --- POOL EXTRA VARIABLE ---
+    private IObjectPool<MegaDinosaur> _megaOriginPool;
+
+    
+    public void ConfigurePool(IObjectPool<MegaDinosaur> pool)
+    {
+        _megaOriginPool = pool;
+    }
+
     protected override void Awake()
     {
-        base.Awake(); 
         
-        MaxHealth = megaMaxHealth; 
-        _currentHealth = MaxHealth; 
-        
+        base.Awake();
+
+        MaxHealth = megaMaxHealth;
         transform.localScale = new Vector3(1.15f, 1.15f, 1.15f);
+    }
+
+    
+    protected override void OnEnable()
+    {
+        base.OnEnable();
+        _dinosInAura.Clear();
     }
 
     protected override void Update()
@@ -50,10 +66,28 @@ public class MegaDinosaur : Dinosaur
 
     public void InitiateMigration()
     {
-        Vector2 rand      = UnityEngine.Random.insideUnitCircle.normalized;
-        Vector3 direction = new Vector3(rand.x, rand.y, 0f); // plan XY
+        Vector2 rand = UnityEngine.Random.insideUnitCircle.normalized;
+        Vector3 direction = new Vector3(rand.x, rand.y, 0f);
         StartMigration(direction, migrationDuration);
         Debug.Log($"Mega {gameObject.name} migre vers {direction}");
+    }
+
+    
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        if (_state == DinoState.Dead)
+        {
+            if (_megaOriginPool != null)
+            {
+                _megaOriginPool.Release(this);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
     }
 
 #if UNITY_EDITOR

@@ -970,8 +970,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f648903bf633c2a44b3ecd6248878805, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnManager
-  dinoToSpawn: {fileID: 1555721082614311146, guid: 9ac5ee30972a4c64ea50360d71130cbd, type: 3}
-  megaToSpawn: {fileID: 1555721082614311146, guid: f7e8f756e3dd81946a42e5ee77e9a3b0, type: 3}
+  dinoPrefab: {fileID: 6350984886047275468, guid: 9ac5ee30972a4c64ea50360d71130cbd, type: 3}
+  megaPrefab: {fileID: 7522517696656291380, guid: f7e8f756e3dd81946a42e5ee77e9a3b0, type: 3}
   megaSpawnStartTime: 90
   megaSpawnCountMin: 1
   megaSpawnCountMax: 4
