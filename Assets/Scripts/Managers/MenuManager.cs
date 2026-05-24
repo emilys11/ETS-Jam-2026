@@ -7,6 +7,7 @@ public class MenuManager : MonoBehaviour
 
     [SerializeField] GameObject menu;
     [SerializeField] GameObject gamePrefab;
+    [SerializeField] GameObject leaderboard;
 
     GameObject currentGame;
 
@@ -42,5 +43,12 @@ public class MenuManager : MonoBehaviour
         currentGame = Instantiate(gamePrefab);
         currentGame.SetActive(true);
         GameManager.Instance.Difficulty = difficulty;
+    }
+
+    public void EndGame()
+    {
+        Destroy(currentGame);
+        menu.SetActive(true);
+        leaderboard.SetActive(true);
     }
 }

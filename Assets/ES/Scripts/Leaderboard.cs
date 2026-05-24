@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 [System.Serializable]
 public class LeaderboardEntry
@@ -22,6 +23,7 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] private List<TextMeshProUGUI> names;
     [SerializeField] private List<TextMeshProUGUI> scores;
     [SerializeField] private GameObject menuUI;
+    [SerializeField] private GameObject mainMenuUI;
     [SerializeField] private GameObject namesObject;
     [SerializeField] private GameObject scoresObject;
 
@@ -39,12 +41,16 @@ public class Leaderboard : MonoBehaviour
 
     private void Start()
     {
-        LoadLeaderboard();
-        RefreshUI();
+
     }
 
     void OnEnable()
     {
+        LoadLeaderboard();
+        RefreshUI();
+
+        playerScore = DynoSoulsManager.totalAmount;
+
         playerScoreText.text = playerScore.ToString();
         namesObject.SetActive(false);
         scoresObject.SetActive(false);
@@ -58,8 +64,7 @@ public class Leaderboard : MonoBehaviour
 
     public void GoHome()
     {
-        //menuUI.SetActive(true);
-        gameObject.SetActive(false);
+        SceneManager.LoadScene("MainSceneAdamTest");
     }
 
     public void SubmitUserInput()

@@ -62,8 +62,6 @@ public class GameManager : MonoBehaviour
         {
             EnterLoseState();
         }
-
-
     }
 
     public void IncrementDinosKilled() 
@@ -79,7 +77,7 @@ public class GameManager : MonoBehaviour
     
     private void EnterLoseState() 
     {
-        Debug.Log("you LOSE");
+        MenuManager.Instance.EndGame();
     }
 
     public DifficultyEnum Difficulty { get => difficulty; set => difficulty = value; }

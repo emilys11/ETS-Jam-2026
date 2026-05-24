@@ -6,20 +6,23 @@ using Vector2 = UnityEngine.Vector2;
 
 public class SelectMenu : MonoBehaviour
 {
+    [SerializeField] GameObject thisPanel;
+
+    [SerializeField] Button[] menuSelectItems = new Button[3];
+
+    int selectedMenuItem = 0;
+
     InputActions controls;
     InputAction joystick;
     InputAction button1;
 
-    [SerializeField] Button[] menuSelectItems = new Button[3];
-    int selectedMenuItem = 0;
-    
     private void NavigateMenu(InputAction.CallbackContext context)
     {
         if (context.ReadValue<Vector2>().y < 0)
         {
             selectedMenuItem++;
         }
-        else
+        else if (context.ReadValue<Vector2>().y > 0)
         {
             selectedMenuItem--;
         }
@@ -32,8 +35,16 @@ public class SelectMenu : MonoBehaviour
         {
             selectedMenuItem = menuSelectItems.Length - 1;
         }
-
-        menuSelectItems[selectedMenuItem].Select();
+        ColorBlock cb;
+        foreach (Button button in menuSelectItems)
+        {
+            cb = button.colors;
+            cb.colorMultiplier = 1.0f;
+            button.colors = cb;
+        }
+        cb = menuSelectItems[selectedMenuItem].colors;
+        cb.colorMultiplier = 1.5f;
+        menuSelectItems[selectedMenuItem].colors = cb;
     }
 
     private void SelectMenuItem(InputAction.CallbackContext context)
@@ -52,6 +63,7 @@ public class SelectMenu : MonoBehaviour
             default:
                 break;
         }
+        thisPanel.SetActive(false);
     }
 
 
@@ -69,10 +81,16 @@ public class SelectMenu : MonoBehaviour
         button1 = controls.Player.Button1;
         button1.Enable();
         button1.performed += SelectMenuItem;
+
+        ColorBlock cb;
+        cb = menuSelectItems[selectedMenuItem].colors;
+        cb.colorMultiplier = 1.5f;
+        menuSelectItems[selectedMenuItem].colors = cb;
     }
 
     void OnDisable()
     {
+        joystick.Disable();
         button1.Disable();
     }
 }
