@@ -4,13 +4,11 @@ using UnityEngine;
 public class PlayerSpawner : MonoBehaviour
 {
     [SerializeField] Meteorite meteoritePrefab;
-    [SerializeField] Volcano volcanoPrefab;
-    [SerializeField] int meteoriteCostValue = 100;
-    [SerializeField] int volcanoCostValue = 100;
 
     Player player;
     Collider spawnArea;
     
+    public int costValue = 100;
 
     void Start()
     {
@@ -35,21 +33,12 @@ public class PlayerSpawner : MonoBehaviour
 
     public void SpawnMeteorite()
     {
-        if (DynoSoulsManager.currentAmount < meteoriteCostValue) return;
+        if (DynoSoulsManager.currentAmount < costValue) return;
  
         Meteorite newMeteorite = Instantiate(meteoritePrefab, RandomPointInBounds(), Quaternion.identity);
         newMeteorite.TargetPos = player.Target.transform.position;
 
-        DynoSoulsEvents.SpendCoins(meteoriteCostValue);
-    }
-
-    public void SpawnVolcano()
-    {
-        if (DynoSoulsManager.currentAmount < volcanoCostValue) return;
-
-        Instantiate(volcanoPrefab, player.Target.transform.position, Quaternion.identity);
-
-        DynoSoulsEvents.SpendCoins(volcanoCostValue);
+        DynoSoulsEvents.SpendCoins(costValue);
     }
 
     public Player Player { set => player = value; }

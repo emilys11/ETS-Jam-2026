@@ -3,7 +3,6 @@ using UnityEngine;
 public class DynoSoulsManager : MonoBehaviour
 {
     public static int startAmount = 300;
-    public static int passiveAmount = 10;
     public static int currentAmount;
 
     void OnEnable()
@@ -13,8 +12,6 @@ public class DynoSoulsManager : MonoBehaviour
         DynoSoulsEvents.OnResetCoins += ResetCoins;
 
         currentAmount = startAmount;
-
-        InvokeRepeating("GeneratePassiveCoins", 1.0f, 1.0f);
     }
 
     void OnDisable()
@@ -23,6 +20,7 @@ public class DynoSoulsManager : MonoBehaviour
         DynoSoulsEvents.OnSpendCoins -= TryRemoveCoins;
         DynoSoulsEvents.OnResetCoins -= ResetCoins;
     }
+
 
     public void ResetCoins()
     {
@@ -48,11 +46,6 @@ public class DynoSoulsManager : MonoBehaviour
     {
         if (currentAmount < remAmount) return;
         RemoveCoins(remAmount);
-    }
-
-    void GeneratePassiveCoins()
-    {
-        AddCoins(passiveAmount);
     }
 
 }

@@ -102,54 +102,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Button1"",
+                    ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""6c2ab1b8-8984-453a-af3d-a3c78ae1679a"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Button2"",
-                    ""type"": ""Button"",
-                    ""id"": ""1417c80b-2785-49a3-a2aa-eb9584d11fb9"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""Button3"",
-                    ""type"": ""Button"",
-                    ""id"": ""fd432910-bc54-4039-be28-4d9671e19b32"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ButtonA"",
-                    ""type"": ""Button"",
-                    ""id"": ""70ca8fab-f3aa-40b5-ac67-35f05617895c"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ButtonB"",
-                    ""type"": ""Button"",
-                    ""id"": ""ade26766-21c1-44fd-a783-9e4c48257e18"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ButtonC"",
-                    ""type"": ""Button"",
-                    ""id"": ""c54da7db-1f3a-43e8-8fa6-ac0f3309b733"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -300,67 +255,67 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""143bb1cd-cc10-4eca-a2f0-a3664166fe91"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""05f6913d-c316-48b2-a6bb-e225f14c7960"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""886e731e-7071-4ae4-95c0-e61739dad6fd"",
+                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Touch"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ee3d0cd2-254e-47a7-a8cb-bc94d9658c54"",
+                    ""path"": ""<Joystick>/trigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Joystick"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8255d333-5683-4943-a58a-ccb207ff1dce"",
+                    ""path"": ""<XRController>/{PrimaryAction}"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""XR"",
+                    ""action"": ""Attack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""b3c1c7f0-bd20-4ee7-a0f1-899b24bca6d7"",
-                    ""path"": ""<Keyboard>/i"",
+                    ""path"": ""<Keyboard>/enter"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Button1"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""b786bfb3-54f7-4e30-bc6d-55dce25dd1d8"",
-                    ""path"": ""<Keyboard>/o"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Button2"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""93dd8f9a-d707-4526-9701-de9cc0b888e5"",
-                    ""path"": ""<Keyboard>/p"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Button3"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""81667cdb-c6ca-4e21-bab4-cb440bef11e1"",
-                    ""path"": ""<Keyboard>/j"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ButtonA"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""4a562539-a02e-4396-8e4f-5f1021d8d473"",
-                    ""path"": ""<Keyboard>/j"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ButtonB"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""01255b02-ee04-4216-82a4-18a217155a51"",
-                    ""path"": ""<Keyboard>/l"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""ButtonC"",
+                    ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -971,12 +926,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_Button1 = m_Player.FindAction("Button1", throwIfNotFound: true);
-        m_Player_Button2 = m_Player.FindAction("Button2", throwIfNotFound: true);
-        m_Player_Button3 = m_Player.FindAction("Button3", throwIfNotFound: true);
-        m_Player_ButtonA = m_Player.FindAction("ButtonA", throwIfNotFound: true);
-        m_Player_ButtonB = m_Player.FindAction("ButtonB", throwIfNotFound: true);
-        m_Player_ButtonC = m_Player.FindAction("ButtonC", throwIfNotFound: true);
+        m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
@@ -1072,12 +1022,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_Button1;
-    private readonly InputAction m_Player_Button2;
-    private readonly InputAction m_Player_Button3;
-    private readonly InputAction m_Player_ButtonA;
-    private readonly InputAction m_Player_ButtonB;
-    private readonly InputAction m_Player_ButtonC;
+    private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_Interact;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
@@ -1095,29 +1040,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Move => m_Wrapper.m_Player_Move;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Button1".
+        /// Provides access to the underlying input action "Player/Attack".
         /// </summary>
-        public InputAction @Button1 => m_Wrapper.m_Player_Button1;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/Button2".
-        /// </summary>
-        public InputAction @Button2 => m_Wrapper.m_Player_Button2;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/Button3".
-        /// </summary>
-        public InputAction @Button3 => m_Wrapper.m_Player_Button3;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/ButtonA".
-        /// </summary>
-        public InputAction @ButtonA => m_Wrapper.m_Player_ButtonA;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/ButtonB".
-        /// </summary>
-        public InputAction @ButtonB => m_Wrapper.m_Player_ButtonB;
-        /// <summary>
-        /// Provides access to the underlying input action "Player/ButtonC".
-        /// </summary>
-        public InputAction @ButtonC => m_Wrapper.m_Player_ButtonC;
+        public InputAction @Attack => m_Wrapper.m_Player_Attack;
         /// <summary>
         /// Provides access to the underlying input action "Player/Interact".
         /// </summary>
@@ -1151,24 +1076,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
-            @Button1.started += instance.OnButton1;
-            @Button1.performed += instance.OnButton1;
-            @Button1.canceled += instance.OnButton1;
-            @Button2.started += instance.OnButton2;
-            @Button2.performed += instance.OnButton2;
-            @Button2.canceled += instance.OnButton2;
-            @Button3.started += instance.OnButton3;
-            @Button3.performed += instance.OnButton3;
-            @Button3.canceled += instance.OnButton3;
-            @ButtonA.started += instance.OnButtonA;
-            @ButtonA.performed += instance.OnButtonA;
-            @ButtonA.canceled += instance.OnButtonA;
-            @ButtonB.started += instance.OnButtonB;
-            @ButtonB.performed += instance.OnButtonB;
-            @ButtonB.canceled += instance.OnButtonB;
-            @ButtonC.started += instance.OnButtonC;
-            @ButtonC.performed += instance.OnButtonC;
-            @ButtonC.canceled += instance.OnButtonC;
+            @Attack.started += instance.OnAttack;
+            @Attack.performed += instance.OnAttack;
+            @Attack.canceled += instance.OnAttack;
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
@@ -1186,24 +1096,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
-            @Button1.started -= instance.OnButton1;
-            @Button1.performed -= instance.OnButton1;
-            @Button1.canceled -= instance.OnButton1;
-            @Button2.started -= instance.OnButton2;
-            @Button2.performed -= instance.OnButton2;
-            @Button2.canceled -= instance.OnButton2;
-            @Button3.started -= instance.OnButton3;
-            @Button3.performed -= instance.OnButton3;
-            @Button3.canceled -= instance.OnButton3;
-            @ButtonA.started -= instance.OnButtonA;
-            @ButtonA.performed -= instance.OnButtonA;
-            @ButtonA.canceled -= instance.OnButtonA;
-            @ButtonB.started -= instance.OnButtonB;
-            @ButtonB.performed -= instance.OnButtonB;
-            @ButtonB.canceled -= instance.OnButtonB;
-            @ButtonC.started -= instance.OnButtonC;
-            @ButtonC.performed -= instance.OnButtonC;
-            @ButtonC.canceled -= instance.OnButtonC;
+            @Attack.started -= instance.OnAttack;
+            @Attack.performed -= instance.OnAttack;
+            @Attack.canceled -= instance.OnAttack;
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
@@ -1515,47 +1410,12 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMove(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Button1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Attack" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnButton1(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Button2" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnButton2(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "Button3" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnButton3(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "ButtonA" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnButtonA(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "ButtonB" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnButtonB(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "ButtonC" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnButtonC(InputAction.CallbackContext context);
+        void OnAttack(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Interact" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

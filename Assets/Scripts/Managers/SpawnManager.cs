@@ -8,10 +8,10 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject megaToSpawn;
 
     [Header("Mega Spawn")]
-    [SerializeField] private float megaSpawnStartTime = 90f;  // 1min30
-    [SerializeField] private int megaSpawnCountMin = 1;
-    [SerializeField] private int megaSpawnCountMax = 4;
-    [SerializeField] private float megaSpawnInterval = 15f;  // delay between megas
+    [SerializeField] private float megaSpawnStartTime  = 90f;  // 1min30
+    [SerializeField] private int   megaSpawnCountMin   = 1;
+    [SerializeField] private int   megaSpawnCountMax   = 4;
+    [SerializeField] private float megaSpawnInterval   = 15f;  // delay between megas
 
     private GameManager _gameManager;
     private AudioHandler _audioHandler;
@@ -22,38 +22,35 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private float _timer = 0f;
 
     private bool _megaSapwnTriggered = false;
-    private int _megasToSpawn = 0;
-    private int _megasSpawned = 0;
-    private float _megaSpawnTimer = 0f;
-
-    bool isFirstSpawn = true;
-    [SerializeField] int firstSpawnAmount = 20;
+    private int _megasToSpawn        = 0;
+    private int _megasSpawned        = 0;
+    private float _megaSpawnTimer    = 0f;
 
     private void OnEnable()
     {
-        Dinosaur.OnDinoSpawnRequested += SpawnDinosaurAt;
-
+        Dinosaur.OnDinoSpawnRequested   += SpawnDinosaurAt;
+        
         // Sécurité si DynoSoulsEvents est introuvable au lancement
-        try { DynoSoulsEvents.OnDinoKill += OnDinoDied; } catch { }
+        try { DynoSoulsEvents.OnDinoKill += OnDinoDied; } catch {}
     }
 
     private void OnDisable()
     {
-        Dinosaur.OnDinoSpawnRequested -= SpawnDinosaurAt;
-        try { DynoSoulsEvents.OnDinoKill -= OnDinoDied; } catch { }
+        Dinosaur.OnDinoSpawnRequested   -= SpawnDinosaurAt;
+        try { DynoSoulsEvents.OnDinoKill -= OnDinoDied; } catch {}
     }
 
     private void Start()
     {
-        _gameManager = GameManager.Instance;
+        _gameManager  = GameManager.Instance;
         _audioHandler = AudioHandler.Instance;
-        _waveManager = FindAnyObjectByType<WaveManager>();
+        _waveManager  = FindAnyObjectByType<WaveManager>();
 
         // FIX: On triche pour faire spawn le tout 1er dino IMMÉDIATEMENT au début du jeu !
-        _timer = _spawnRate;
-
-        if (_gameManager == null) Debug.LogError("SpawnManager: GameManager est INTROUVABLE !");
-        if (dinoToSpawn == null) Debug.LogError("SpawnManager: Il manque le Prefab dinoToSpawn !");
+        _timer = _spawnRate; 
+        
+        if(_gameManager == null) Debug.LogError("SpawnManager: GameManager est INTROUVABLE !");
+        if(dinoToSpawn == null) Debug.LogError("SpawnManager: Il manque le Prefab dinoToSpawn !");
     }
 
     private void Update()
@@ -68,27 +65,17 @@ public class SpawnManager : MonoBehaviour
     private void HandleRegularSpawn()
     {
         _timer += Time.deltaTime * 0.5f;
-        if (_timer < _spawnRate) return;
+        if(_timer < _spawnRate) return;
+
         _timer = 0f; // Reset du timer
         UpdateSpawnRate();
-        if (isFirstSpawn)
-        {
-            for (int i = 0; i < firstSpawnAmount; i++)
-            {
-                SpawnDinosaur();
-            }
-            isFirstSpawn = false;
-        }
-        else
-        {
-            SpawnDinosaur();
-        }
+        SpawnDinosaur();
     }
 
     private void UpdateSpawnRate()
     {
         float t = Mathf.Max(_gameManager.GetgameTime, 1f);
-        _spawnRate = Mathf.Max(5f, 5.0f / (t * 0.05f + 1));
+        _spawnRate = Mathf.Max(5f, 40f / (t * 0.05f + 1));
         // Debug.Log($"Spawn rate updated: {_spawnRate}"); // Décommenter si tu veux voir le rate descendre
     }
 
@@ -123,12 +110,12 @@ public class SpawnManager : MonoBehaviour
 
     private void HandleMegaSpawn()
     {
-        if (_megaSapwnTriggered)
+        if(_megaSapwnTriggered)
         {
-            if (_megasSpawned >= _megasToSpawn) return;
-
+            if(_megasSpawned >= _megasToSpawn) return;
+            
             _megaSpawnTimer -= Time.deltaTime;
-            if (_megaSpawnTimer > 0f) return;
+            if(_megaSpawnTimer > 0f) return;
 
             SpawnMegaDinosaur();
             _megasSpawned++;
@@ -136,7 +123,7 @@ public class SpawnManager : MonoBehaviour
             return;
         }
 
-        if (_gameManager.GetgameTime >= megaSpawnStartTime)
+        if(_gameManager.GetgameTime >= megaSpawnStartTime)
         {
             _megaSapwnTriggered = true;
             _megasToSpawn = UnityEngine.Random.Range(megaSpawnCountMin, megaSpawnCountMax + 1);
@@ -152,7 +139,7 @@ public class SpawnManager : MonoBehaviour
         MegaDinosaur mega = go.GetComponent<MegaDinosaur>();
 
         _gameManager.SetDinosAlive(_gameManager.GetDinosAlive() + 1);
-
+        
         if (_waveManager != null)
         {
             _waveManager.ScheduleMegaMigration(mega);
@@ -161,7 +148,7 @@ public class SpawnManager : MonoBehaviour
     }
 
     // CORRIGÉ POUR LA 2D : Z = 0
-    private Vector3 GetSpawnPosition()
+    private Vector3 GetSpawnPosition() 
     {
         float randomX = UnityEngine.Random.Range(5f, 50f);
         float randomY = UnityEngine.Random.Range(5f, 27f); // C'était Z ici avant
