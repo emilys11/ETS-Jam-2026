@@ -48,6 +48,8 @@ public class Leaderboard : MonoBehaviour
         LoadLeaderboard();
         RefreshUI();
 
+        playerScore = DynoSoulsManager.totalAmount;
+
         playerScoreText.text = playerScore.ToString();
         namesObject.SetActive(false);
         scoresObject.SetActive(false);
