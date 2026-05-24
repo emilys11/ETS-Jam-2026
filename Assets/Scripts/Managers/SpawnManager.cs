@@ -3,90 +3,159 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField] Dinosaur objectToSpawn;
-    [SerializeField] GameObject tempMap; //TEMPORARY, WAIT FOR REAL MAP
-    GameManager gameManager;
-    AudioHandler audioHandler;
+    [Header("Prefabs")]
+    [SerializeField] private GameObject dinoToSpawn;
+    [SerializeField] private GameObject megaToSpawn;
 
-    private float spawnRate = 1f;
-    private float timer = 0f;
+    [Header("Mega Spawn")]
+    [SerializeField] private float megaSpawnStartTime  = 90f;  // 1min30
+    [SerializeField] private int   megaSpawnCountMin   = 1;
+    [SerializeField] private int   megaSpawnCountMax   = 4;
+    [SerializeField] private float megaSpawnInterval   = 15f;  // delay between megas
+
+    private GameManager _gameManager;
+    private AudioHandler _audioHandler;
+    private WaveManager _waveManager;
+
+    [Header("Debug")]
+    [SerializeField] private float _spawnRate = 40f;
+    [SerializeField] private float _timer = 0f;
+
+    private bool _megaSapwnTriggered = false;
+    private int _megasToSpawn        = 0;
+    private int _megasSpawned        = 0;
+    private float _megaSpawnTimer    = 0f;
 
     private void OnEnable()
     {
         Dinosaur.OnDinoSpawnRequested   += SpawnDinosaurAt;
-        DynoSoulsEvents.OnDinoKill      += OnDinoDied;
+        
+        // Sécurité si DynoSoulsEvents est introuvable au lancement
+        try { DynoSoulsEvents.OnDinoKill += OnDinoDied; } catch {}
     }
+
     private void OnDisable()
     {
         Dinosaur.OnDinoSpawnRequested   -= SpawnDinosaurAt;
-        DynoSoulsEvents.OnDinoKill      -= OnDinoDied;
-    }
-    private void SpawnDinosaurAt(Vector3 pos, Dinosaur parent)
-    {
-        Dinosaur go = Instantiate(objectToSpawn, pos, Quaternion.identity);
-        
-        go.GetComponent<Dinosaur>().SetParent(parent);
-        parent.AddChild(go.GetComponent<Dinosaur>());
-
-        //audioHandler.PlayEffect(audioHandler.spawnEffect, "spawns");
-
-        int dinosAlive =  gameManager.GetDinosAlive();
-        gameManager.SetDinosAlive(dinosAlive + 1);
-    }
-    private void OnDinoDied(Vector3 _)
-    {
-        int dinosAlive = gameManager.GetDinosAlive();
-        gameManager.SetDinosAlive(dinosAlive - 1);
+        try { DynoSoulsEvents.OnDinoKill -= OnDinoDied; } catch {}
     }
 
     private void Start()
     {
-        gameManager = GameManager.Instance;
-        audioHandler = AudioHandler.Instance;
+        _gameManager  = GameManager.Instance;
+        _audioHandler = AudioHandler.Instance;
+        _waveManager  = FindAnyObjectByType<WaveManager>();
+
+        // FIX: On triche pour faire spawn le tout 1er dino IMMÉDIATEMENT au début du jeu !
+        _timer = _spawnRate; 
+        
+        if(_gameManager == null) Debug.LogError("SpawnManager: GameManager est INTROUVABLE !");
+        if(dinoToSpawn == null) Debug.LogError("SpawnManager: Il manque le Prefab dinoToSpawn !");
     }
 
     private void Update()
     {
-        timer += Time.deltaTime * 0.5f;
-        if (timer >= spawnRate)
-        {
-            IncrementSpawnRateWithTime();
-            SpawnDinosaur();
-            timer = 0f;
-        }
+        // Si le GameManager a planté, on arrête d'essayer de spawn pour pas spammer la console d'erreurs
+        if (_gameManager == null) return;
+
+        HandleRegularSpawn();
+        HandleMegaSpawn();
+    }
+
+    private void HandleRegularSpawn()
+    {
+        _timer += Time.deltaTime * 0.5f;
+        if(_timer < _spawnRate) return;
+
+        _timer = 0f; // Reset du timer
+        UpdateSpawnRate();
+        SpawnDinosaur();
+    }
+
+    private void UpdateSpawnRate()
+    {
+        float t = Mathf.Max(_gameManager.GetgameTime, 1f);
+        _spawnRate = Mathf.Max(5f, 40f / (t * 0.05f + 1));
+        // Debug.Log($"Spawn rate updated: {_spawnRate}"); // Décommenter si tu veux voir le rate descendre
     }
 
     private void SpawnDinosaur()
     {
-        Instantiate(objectToSpawn, GetSpawnPosition(), Quaternion.identity);
-        audioHandler.PlayEffect(audioHandler.spawnEffect, "spawns");
+        if (dinoToSpawn == null) return;
+        Instantiate(dinoToSpawn, GetSpawnPosition(), Quaternion.identity);
+        _gameManager.SetDinosAlive(_gameManager.GetDinosAlive() + 1);
     }
 
-    private void IncrementSpawnRateWithTime()
+    private void SpawnDinosaurAt(Vector3 pos, Dinosaur parent)
     {
-        //float t = Mathf.Max(gameManager.GetgameTime, 1f);
-        //spawnRate = Math.Max(5f, 40f/ (t * 0.05f +1));
-        spawnRate = Mathf.Pow((1/gameManager.GetgameTime),0.35f)*3f;
-        int dinosAlive = gameManager.GetDinosAlive();
-        dinosAlive += 1;
-        gameManager.SetDinosAlive((dinosAlive));
+        if (dinoToSpawn == null) return;
+        GameObject go = Instantiate(dinoToSpawn, pos, Quaternion.identity);
+        Dinosaur dino = go.GetComponent<Dinosaur>();
+
+        if (dino != null)
+        {
+            dino.SetParent(parent);
+            parent.AddChild(dino);
+        }
+
+        if (_gameManager != null)
+            _gameManager.SetDinosAlive(_gameManager.GetDinosAlive() + 1);
     }
-    
+
+    private void OnDinoDied(Vector3 _)
+    {
+        if (_gameManager != null)
+            _gameManager.SetDinosAlive(_gameManager.GetDinosAlive() - 1);
+    }
+
+    private void HandleMegaSpawn()
+    {
+        if(_megaSapwnTriggered)
+        {
+            if(_megasSpawned >= _megasToSpawn) return;
+            
+            _megaSpawnTimer -= Time.deltaTime;
+            if(_megaSpawnTimer > 0f) return;
+
+            SpawnMegaDinosaur();
+            _megasSpawned++;
+            _megaSpawnTimer = megaSpawnInterval;
+            return;
+        }
+
+        if(_gameManager.GetgameTime >= megaSpawnStartTime)
+        {
+            _megaSapwnTriggered = true;
+            _megasToSpawn = UnityEngine.Random.Range(megaSpawnCountMin, megaSpawnCountMax + 1);
+            _megaSpawnTimer = 0f; // Force le premier mega à spawn tout de suite
+            Debug.Log($"Mega wave triggered: {_megasToSpawn} megas incoming");
+        }
+    }
+
+    private void SpawnMegaDinosaur()
+    {
+        if (megaToSpawn == null) return;
+        GameObject go = Instantiate(megaToSpawn, GetSpawnPosition(), Quaternion.identity);
+        MegaDinosaur mega = go.GetComponent<MegaDinosaur>();
+
+        _gameManager.SetDinosAlive(_gameManager.GetDinosAlive() + 1);
+        
+        if (_waveManager != null)
+        {
+            _waveManager.ScheduleMegaMigration(mega);
+            Debug.Log($"Megadino spawned, migration scheduled.");
+        }
+    }
+
+    // CORRIGÉ POUR LA 2D : Z = 0
     private Vector3 GetSpawnPosition() 
     {
+        float randomX = UnityEngine.Random.Range(5f, 50f);
+        float randomY = UnityEngine.Random.Range(5f, 27f); // C'était Z ici avant
 
-        //TEMPORARY POSITIONS
-        float randomX = UnityEngine.Random.Range(5f,50f);
-        float randomY = UnityEngine.Random.Range(5f, 27f);
-
-        Vector3 spawnPos = new Vector3(randomX, randomY, 0f);
-
-        return spawnPos;
+        return new Vector3(randomX, randomY, 0f); // Z est figé à 0
     }
 
-    private void GetBounds() 
-    {
-
-    }
+    [ContextMenu("Test Spawn Mega")]
+    private void TestSpawnMega() => SpawnMegaDinosaur();
 }
-        

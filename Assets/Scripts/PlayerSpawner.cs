@@ -7,6 +7,8 @@ public class PlayerSpawner : MonoBehaviour
 
     Player player;
     Collider spawnArea;
+    
+    public int costValue = 100;
 
     void Start()
     {
@@ -31,8 +33,12 @@ public class PlayerSpawner : MonoBehaviour
 
     public void SpawnMeteorite()
     {
+        if (DynoSoulsManager.currentAmount < costValue) return;
+ 
         Meteorite newMeteorite = Instantiate(meteoritePrefab, RandomPointInBounds(), Quaternion.identity);
         newMeteorite.TargetPos = player.Target.transform.position;
+
+        DynoSoulsEvents.SpendCoins(costValue);
     }
 
     public Player Player { set => player = value; }
