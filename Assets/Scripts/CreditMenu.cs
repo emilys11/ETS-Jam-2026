@@ -1,8 +1,5 @@
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
-using Vector2 = UnityEngine.Vector2;
 
 public class CreditMenu : MonoBehaviour
 {
@@ -42,5 +39,6 @@ public class CreditMenu : MonoBehaviour
     void OnDisable()
     {
         button1.Disable();
+        button2.Disable();
     }
 }

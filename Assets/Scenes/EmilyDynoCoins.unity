@@ -1557,8 +1557,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f87a861d50892704cb48b3df25753b39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomCursor
-  cursorTexture: {fileID: 2800000, guid: ce68117f9764e7d4db1670c49d6c2c06, type: 3}
-  hotspot: {x: 0, y: 0}
 --- !u!4 &491814493
 Transform:
   m_ObjectHideFlags: 0
@@ -1711,7 +1709,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76158d19754d9264a80fa734611006b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DynoSoulsUI
+  numOfDigitsToShow: 5
   amountText: {fileID: 1295049567}
+  scoreText: {fileID: 0}
 --- !u!114 &632821910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2054,6 +2054,9 @@ MonoBehaviour:
   - {fileID: 1829061583}
   - {fileID: 1148245877}
   - {fileID: 1126730651}
+  menuUI: {fileID: 0}
+  namesObject: {fileID: 1962816220}
+  scoresObject: {fileID: 927449590}
   playerScore: 5000
   playerScoreText: {fileID: 803413078}
   submitButton: {fileID: 329461567}
@@ -4355,6 +4358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 937b8f4dec5a8fd45b11241a25f01aad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Keyboard
+  inputField: {fileID: 356534209}
 --- !u!1 &1681726972
 GameObject:
   m_ObjectHideFlags: 0

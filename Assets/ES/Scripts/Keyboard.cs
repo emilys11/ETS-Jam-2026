@@ -8,6 +8,7 @@ public class Keyboard : MonoBehaviour
 
     public void OpenKeyboard()
     {
+        Debug.Log("OPEN KEYBOARD");
         System.Diagnostics.Process.Start("OSK.exe");
         inputField.ActivateInputField();
     }

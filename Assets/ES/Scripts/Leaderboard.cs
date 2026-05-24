@@ -22,6 +22,7 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] private List<TextMeshProUGUI> names;
     [SerializeField] private List<TextMeshProUGUI> scores;
     [SerializeField] private GameObject menuUI;
+    [SerializeField] private GameObject mainMenuUI;
     [SerializeField] private GameObject namesObject;
     [SerializeField] private GameObject scoresObject;
 
@@ -39,12 +40,14 @@ public class Leaderboard : MonoBehaviour
 
     private void Start()
     {
-        LoadLeaderboard();
-        RefreshUI();
+
     }
 
     void OnEnable()
     {
+        LoadLeaderboard();
+        RefreshUI();
+
         playerScoreText.text = playerScore.ToString();
         namesObject.SetActive(false);
         scoresObject.SetActive(false);
@@ -60,6 +63,8 @@ public class Leaderboard : MonoBehaviour
     {
         //menuUI.SetActive(true);
         gameObject.SetActive(false);
+        menuUI.SetActive(true);
+        mainMenuUI.SetActive(true);
     }
 
     public void SubmitUserInput()

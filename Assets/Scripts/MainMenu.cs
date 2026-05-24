@@ -11,17 +11,19 @@ public class MainMenu : MonoBehaviour
     InputAction button1;
 
     [SerializeField] Button[] menuSelectItems = new Button[3];
+    [SerializeField] GameObject thisPanel;
     [SerializeField] GameObject creditPanel;
     [SerializeField] GameObject difficultyPanel;
+    [SerializeField] Animator cassetteAnimator;
     int selectedMenuItem = 0;
-    
+
     private void NavigateMenu(InputAction.CallbackContext context)
     {
         if (context.ReadValue<Vector2>().y < 0)
         {
             selectedMenuItem++;
         }
-        else
+        else if (context.ReadValue<Vector2>().y > 0)
         {
             selectedMenuItem--;
         }
@@ -34,7 +36,6 @@ public class MainMenu : MonoBehaviour
         {
             selectedMenuItem = menuSelectItems.Length - 1;
         }
-
         menuSelectItems[selectedMenuItem].Select();
     }
 
@@ -43,12 +44,11 @@ public class MainMenu : MonoBehaviour
         switch (selectedMenuItem)
         {
             case 0:
-                difficultyPanel.SetActive(true);
-                gameObject.SetActive(false);
+                cassetteAnimator.SetTrigger("ToLvlSelect");
                 break;
             case 1:
                 creditPanel.SetActive(true);
-                gameObject.SetActive(false);
+                thisPanel.SetActive(false);
                 break;
             case 2:
                 Application.Quit();
@@ -57,7 +57,6 @@ public class MainMenu : MonoBehaviour
                 break;
         }
     }
-
 
     void Awake()
     {
@@ -73,10 +72,14 @@ public class MainMenu : MonoBehaviour
         button1 = controls.Player.Button1;
         button1.Enable();
         button1.performed += SelectMenuItem;
+
+        selectedMenuItem = 0;
+        menuSelectItems[0].Select();
     }
 
     void OnDisable()
     {
+        joystick.Disable();
         button1.Disable();
     }
 }

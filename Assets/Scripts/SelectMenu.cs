@@ -6,20 +6,23 @@ using Vector2 = UnityEngine.Vector2;
 
 public class SelectMenu : MonoBehaviour
 {
+    [SerializeField] GameObject thisPanel;
+
+    [SerializeField] Button[] menuSelectItems = new Button[3];
+
+    int selectedMenuItem = 0;
+
     InputActions controls;
     InputAction joystick;
     InputAction button1;
 
-    [SerializeField] Button[] menuSelectItems = new Button[3];
-    int selectedMenuItem = 0;
-    
     private void NavigateMenu(InputAction.CallbackContext context)
     {
         if (context.ReadValue<Vector2>().y < 0)
         {
             selectedMenuItem++;
         }
-        else
+        else if (context.ReadValue<Vector2>().y > 0)
         {
             selectedMenuItem--;
         }
@@ -52,6 +55,7 @@ public class SelectMenu : MonoBehaviour
             default:
                 break;
         }
+        thisPanel.SetActive(false);
     }
 
 
@@ -69,10 +73,12 @@ public class SelectMenu : MonoBehaviour
         button1 = controls.Player.Button1;
         button1.Enable();
         button1.performed += SelectMenuItem;
+        menuSelectItems[0].Select();
     }
 
     void OnDisable()
     {
+        joystick.Disable();
         button1.Disable();
     }
 }
