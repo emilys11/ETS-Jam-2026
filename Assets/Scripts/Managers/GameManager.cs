@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -21,6 +20,8 @@ public class GameManager : MonoBehaviour
     public int GetDinosKilled() { return dinosKilled; }
 
     private float loseThreshold=500f;
+
+    private DifficultyEnum difficulty;
 
     private void Start() 
     {
@@ -79,5 +80,14 @@ public class GameManager : MonoBehaviour
     private void EnterLoseState() 
     {
         Debug.Log("you LOSE");
+    }
+
+    public DifficultyEnum Difficulty { get => difficulty; set => difficulty = value; }
+
+    public enum DifficultyEnum
+    {
+        Easy,
+        Hard,
+        Apocalypse
     }
 }
