@@ -29,6 +29,7 @@ public class MegaDinosaur : Dinosaur
         base.Awake();
 
         MaxHealth = megaMaxHealth;
+        _currentHealth = MaxHealth;
         transform.localScale = new Vector3(1.15f, 1.15f, 1.15f);
     }
 
