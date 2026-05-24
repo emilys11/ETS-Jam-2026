@@ -65,6 +65,9 @@ public class Meteorite : MonoBehaviour
 
         crashCollider.radius = Mathf.Lerp(minCrashRadius, maxCrashRadius, crashingTimePercentage);
 
+        if (AudioHandler.Instance != null && AudioHandler.Instance.meteorLanding != null)
+            AudioHandler.Instance.PlayEffect(AudioHandler.Instance.meteorLanding, "Meteors");
+
         crashingTimePercentage += step;
         if (crashingTimePercentage >= 1.0f)
         {
@@ -77,6 +80,8 @@ public class Meteorite : MonoBehaviour
     {
         Dinosaur dinosaur = collider.GetComponent<Dinosaur>();
         dinosaur.Kill();
+        if (AudioHandler.Instance != null && AudioHandler.Instance.crushedEffect != null)
+            AudioHandler.Instance.PlayEffect(AudioHandler.Instance.crushedEffect, "CrushedDeath");
     }
 
     public Vector3 TargetPos { set => targetPos = value; }
