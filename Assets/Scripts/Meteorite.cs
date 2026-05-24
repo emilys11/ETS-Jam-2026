@@ -4,9 +4,9 @@ using UnityEngine;
 public class Meteorite : MonoBehaviour
 {
     [SerializeField] float meteoriteSize = 1.0f;
-    [SerializeField] float maxCrashRadius = 0.5f;
+    [SerializeField] float maxCrashRadius = 1.0f;
     [SerializeField] float fallingSpeed = 40.0f;
-    [SerializeField] float crashingSpeed = 1.0f;
+    [SerializeField] float crashingSpeed = 5.0f;
 
     CircleCollider2D crashCollider;
     SpriteRenderer renderer;

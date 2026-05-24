@@ -64,6 +64,7 @@ public class Dinosaur : MonoBehaviour
 
     protected Rigidbody2D     _rb;
     protected SpriteRenderer  _sr;
+    protected Animator _animator;
 
     private int   _baseMeetingsToReproduce;
     private float _baseReproductionCooldown;
@@ -85,6 +86,7 @@ public class Dinosaur : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody2D>();
         _sr = GetComponent<SpriteRenderer>();
+        _animator = GetComponent<Animator>();
 
         if (dinoSprites.Length > 0)
             _sr.sprite = dinoSprites[UnityEngine.Random.Range(0, dinoSprites.Length)];
@@ -121,17 +123,20 @@ public class Dinosaur : MonoBehaviour
             MoveTowardTarget();
             return;
         }
-
         switch(_state)
         {
             case DinoState.Idle:
-                if(_stateTimer <= 0f) EnterWander();
+                if(_stateTimer <= 0f) {
+                    EnterWander();
+                }
+                _animator.SetBool("isWandering", false);
                 break;
 
             case DinoState.Wandering:
                 MoveTowardTarget();
                 bool arrived = Vector3.Distance(transform.position, _wanderTarget) <= arrivalThreshold;
                 if (arrived || _stateTimer <= 0f) EnterIdle();
+                _animator.SetBool("isWandering", true);
                 break;        
         }
     }
@@ -153,7 +158,7 @@ public class Dinosaur : MonoBehaviour
     private void MoveTowardTarget()
     {
         Vector3 dir;
-        
+        // _animator.SetBool("isWandering", true);
         if (_isMigrating && _flockLeader != null) {
             dir = ComputeFlockSteering();
         }
@@ -417,6 +422,8 @@ public class Dinosaur : MonoBehaviour
 
     public bool IsDead => _state == DinoState.Dead;
     public int  Health => _currentHealth;
+
+    public int MaxHealth { get => maxHealth; set => maxHealth = value; }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
