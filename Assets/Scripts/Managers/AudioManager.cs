@@ -21,9 +21,11 @@ using UnityEngine.Audio;
 
         [Header("Game Audio")]
         [SerializeField] public AudioClip spawnEffect;
-        [SerializeField] public AudioClip deathEffect;
+        [SerializeField] public AudioClip crushedEffect;
         [SerializeField] public AudioClip meteorLanding;
         [SerializeField] public AudioClip volcanoEffect;
+        [SerializeField] public AudioClip charredEffect;
+        [SerializeField] public AudioClip flooddEffect;
 
 
     private void Awake()

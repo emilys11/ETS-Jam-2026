@@ -164893,6 +164893,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76158d19754d9264a80fa734611006b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DynoSoulsUI
+  numOfDigitsToShow: 5
   amountText: {fileID: 625684957}
   scoreText: {fileID: 772390371}
 --- !u!114 &912086725
@@ -165274,10 +165275,12 @@ MonoBehaviour:
   musicSource: {fileID: 1058912568}
   gameMusic: {fileID: 8300000, guid: 8e1975ac03242f54f9c0e2d070947aa1, type: 3}
   selectEffect: {fileID: 8300000, guid: e16e68a77d521254d8408b586bab8cfa, type: 3}
-  spawnEffect: {fileID: 8300000, guid: eb5b404e6fe83af489ac03847d5564c8, type: 3}
-  deathEffect: {fileID: 8300000, guid: 755dd0f6b513f0342820d5e2c0b7d8c0, type: 3}
+  spawnEffect: {fileID: 8300000, guid: bfb5a9fa405b6a045bfc2f65879b968a, type: 3}
+  crushedEffect: {fileID: 8300000, guid: 3a37bebec3a20e4479713c88357a1ec2, type: 3}
   meteorLanding: {fileID: 8300000, guid: 4ecae6e4bc906694c9cc60db3d329aa7, type: 3}
-  volcanoEffect: {fileID: 8300000, guid: 47c68cff16b177b4aa1cfb0bc2396b86, type: 3}
+  volcanoEffect: {fileID: 8300000, guid: d34348da4952b2b4dbdf92027e4e35fc, type: 3}
+  charredEffect: {fileID: 8300000, guid: b62a4b3e58002cc4d8d251f26730c495, type: 3}
+  flooddEffect: {fileID: 8300000, guid: 76388eda5955d9d4cbe72bfa3d69c57b, type: 3}
   pitchSmoothSpeed: 5
 --- !u!4 &1058912570
 Transform:
