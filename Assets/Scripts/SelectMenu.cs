@@ -35,8 +35,16 @@ public class SelectMenu : MonoBehaviour
         {
             selectedMenuItem = menuSelectItems.Length - 1;
         }
-
-        menuSelectItems[selectedMenuItem].Select();
+        ColorBlock cb;
+        foreach (Button button in menuSelectItems)
+        {
+            cb = button.colors;
+            cb.colorMultiplier = 1.0f;
+            button.colors = cb;
+        }
+        cb = menuSelectItems[selectedMenuItem].colors;
+        cb.colorMultiplier = 1.5f;
+        menuSelectItems[selectedMenuItem].colors = cb;
     }
 
     private void SelectMenuItem(InputAction.CallbackContext context)
@@ -73,7 +81,11 @@ public class SelectMenu : MonoBehaviour
         button1 = controls.Player.Button1;
         button1.Enable();
         button1.performed += SelectMenuItem;
-        menuSelectItems[0].Select();
+
+        ColorBlock cb;
+        cb = menuSelectItems[selectedMenuItem].colors;
+        cb.colorMultiplier = 1.5f;
+        menuSelectItems[selectedMenuItem].colors = cb;
     }
 
     void OnDisable()

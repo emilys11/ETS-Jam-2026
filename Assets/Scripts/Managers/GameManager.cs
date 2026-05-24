@@ -62,8 +62,6 @@ public class GameManager : MonoBehaviour
         {
             EnterLoseState();
         }
-        EnterLoseState();
-
     }
 
     public void IncrementDinosKilled() 
