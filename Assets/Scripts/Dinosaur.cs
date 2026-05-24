@@ -463,8 +463,17 @@ public class Dinosaur : MonoBehaviour
         }
         else if (_state == DinoState.Wandering)
         {
-            // PETITS DINOS : On charge la glissade !
-            _obstacleAvoidance = normal; 
+            Vector3 toTarget = (_wanderTarget - transform.position).normalized;
+            // Si on fonce dans le mur (produit scalaire négatif), on abandonne la cible
+            if (Vector3.Dot(toTarget, normal) < -0.5f)
+            {
+                EnterIdle();
+            }
+            else
+            {
+                // Sinon on applique une glissade douce
+                _obstacleAvoidance = normal;
+            }
         }
     }
 /*
