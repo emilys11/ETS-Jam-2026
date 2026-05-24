@@ -66,10 +66,11 @@ public class Meteorite : MonoBehaviour
         crashCollider.radius = Mathf.Lerp(minCrashRadius, maxCrashRadius, crashingTimePercentage);
 
         crashingTimePercentage += step;
+        Debug.Log(crashCollider);
         if (crashingTimePercentage >= 1.0f)
         {
             isCrashing = false;
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 
