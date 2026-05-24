@@ -8,19 +8,15 @@ public class Player : MonoBehaviour
     [SerializeField] PlayerSpawner spawner;
     [SerializeField] Rigidbody target;
 
-    Rigidbody rb;
-
     Vector4 worldBounds;
-
     
     InputActions controls;
     InputAction moveAction;
-    InputAction attackAction;
+    InputAction meteoriteAction;
+    InputAction volcanoAction;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-
         spawner.Player = this;
 
         worldBounds = new Vector4(-1000.0f, 1000.0f, -1000.0f, 1000.0f);
@@ -45,9 +41,14 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(xPos, transform.position.y, zPos);
     }
 
-    private void Attack(InputAction.CallbackContext context)
+    private void Meteorite(InputAction.CallbackContext context)
     {
         spawner.SpawnMeteorite();
+    }
+
+    private void Volcano(InputAction.CallbackContext context)
+    {
+        spawner.SpawnVolcano();
     }
 
     void Awake()
@@ -60,19 +61,24 @@ public class Player : MonoBehaviour
         moveAction = controls.Player.Move;
         moveAction.Enable();
 
-        attackAction = controls.Player.Attack;
-        attackAction.Enable();
-        attackAction.performed += Attack;
+        meteoriteAction = controls.Player.Button1;
+        meteoriteAction.Enable();
+        meteoriteAction.performed += Meteorite;
+
+        volcanoAction = controls.Player.Button2;
+        volcanoAction.Enable();
+        volcanoAction.performed += Volcano;
     }
-
-
 
     void OnDisable()
     {
         moveAction.Disable();
 
-        attackAction.Disable();
-        attackAction.performed -= Attack;
+        meteoriteAction.Disable();
+        meteoriteAction.performed -= Meteorite;
+
+        volcanoAction.Disable();
+        volcanoAction.performed -= Volcano;
     }
 
     public Rigidbody Target { get => target;}
