@@ -459,11 +459,26 @@ public class Dinosaur : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Volcano") || collision.gameObject.CompareTag("Flood"))
+        if (collision.gameObject.CompareTag("Volcano"))
         {
             TakeDamage(maxHealth);
             if (AudioHandler.Instance != null && AudioHandler.Instance.charredEffect != null)
                 AudioHandler.Instance.PlayEffect(AudioHandler.Instance.charredEffect, "CharredDeath");
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Flood"))
+        {
+            float randomChanceToDie = UnityEngine.Random.Range(0, 20);
+
+            if (randomChanceToDie <= 10)
+            {
+                TakeDamage(maxHealth);
+                if (AudioHandler.Instance != null && AudioHandler.Instance.charredEffect != null)
+                    AudioHandler.Instance.PlayEffect(AudioHandler.Instance.charredEffect, "CharredDeath");
+            }
         }
     }
 

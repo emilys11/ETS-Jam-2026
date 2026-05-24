@@ -51,6 +51,11 @@ public class Player : MonoBehaviour
         spawner.SpawnVolcano();
     }
 
+    private void Flood(InputAction.CallbackContext context)
+    {
+        spawner.SpawnFlood();
+    }
+
     void Awake()
     {
         controls = new InputActions();
@@ -68,6 +73,10 @@ public class Player : MonoBehaviour
         volcanoAction = controls.Player.Button2;
         volcanoAction.Enable();
         volcanoAction.performed += Volcano;
+
+        volcanoAction = controls.Player.Button3;
+        volcanoAction.Enable();
+        volcanoAction.performed += Flood;
     }
 
     void OnDisable()

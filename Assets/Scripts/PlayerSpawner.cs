@@ -5,8 +5,10 @@ public class PlayerSpawner : MonoBehaviour
 {
     [SerializeField] Meteorite meteoritePrefab;
     [SerializeField] Volcano volcanoPrefab;
-    [SerializeField] int meteoriteCostValue = 100;
-    [SerializeField] int volcanoCostValue = 100;
+    [SerializeField] Flood floodPrefab;
+    [SerializeField] int meteoriteCostValue = 30;
+    [SerializeField] int volcanoCostValue = 300;
+    [SerializeField] int floodCostValue = 500;
 
     Player player;
     Collider spawnArea;
@@ -50,6 +52,17 @@ public class PlayerSpawner : MonoBehaviour
         Instantiate(volcanoPrefab, player.Target.transform.position, Quaternion.identity);
 
         DynoSoulsEvents.SpendCoins(volcanoCostValue);
+    }
+
+    public void SpawnFlood()
+    {
+        if (DynoSoulsManager.currentAmount < floodCostValue) return;
+
+        Vector3 pos = new Vector3(-100f, 20, 0f);
+
+        Instantiate(floodPrefab,pos, Quaternion.identity);
+
+        DynoSoulsEvents.SpendCoins(floodCostValue);
     }
 
     public Player Player { set => player = value; }
