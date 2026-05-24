@@ -20,7 +20,7 @@ public class MegaDinosaur : Dinosaur
         maxHealth = megaMaxHealth; 
         _currentHealth = maxHealth; 
         
-        transform.localScale = new Vector3(1.5f, 1.5f, 1.5f);
+        transform.localScale = new Vector3(1.15f, 1.15f, 1.15f);
     }
 
     protected override void Update()

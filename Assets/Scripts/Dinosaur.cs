@@ -47,6 +47,7 @@ public class Dinosaur : MonoBehaviour
     protected bool         _isMigrating;
     protected Vector3      _migrationDirection;
     protected Vector3      _obstacleAvoidance;
+    protected Vector3      _baseMigrationDirection;
     protected float        _migrationTimeRemaining;
     public Vector3         MigrationDirection => _migrationDirection;
 
@@ -153,18 +154,32 @@ public class Dinosaur : MonoBehaviour
         else if (_isMigrating) {
             dir = _migrationDirection;
         }
-        else {
+        else {/*
             dir = _wanderTarget - transform.position;
             dir.z = 0f; // On annule Z en 2D !
             if (dir.sqrMagnitude < 0.01f) return;
+            dir.Normalize();*/
+             // COMPORTEMENT WANDER (Petits dinos)
+            dir = _wanderTarget - transform.position;
+            dir.z = 0f; 
+            if (dir.sqrMagnitude < 0.01f) return;
             dir.Normalize();
-        }
+
+            // On applique la glissade douce ici !
+            dir += _obstacleAvoidance * 1.5f;
+            dir.z = 0f;
+            if (dir.sqrMagnitude > 0.01f) dir.Normalize();
+
+            // La force de glissade s'estompe quand on s'éloigne du mur
+            _obstacleAvoidance = Vector3.Lerp(_obstacleAvoidance, Vector3.zero, Time.deltaTime * 5f);
+        }/*
         dir += _obstacleAvoidance * 1.5f; // On dévie la direction loin du mur
         dir.z = 0f;
         if (dir.sqrMagnitude > 0.01f) dir.Normalize();
 
         // On dissipe l'esquive progressivement pour qu'il reprenne sa route après le mur
         _obstacleAvoidance = Vector3.Lerp(_obstacleAvoidance, Vector3.zero, Time.deltaTime * 5f);
+        */
 
         _rb.linearVelocity = dir * (_isMigrating ? migrationSpeed : moveSpeed);
 
@@ -248,6 +263,8 @@ public class Dinosaur : MonoBehaviour
         // Rotation sur l'axe Z pour la 2D !
         _migrationDirection = Quaternion.Euler(0f, 0f, variation) * direction;
         _migrationDirection.Normalize();
+
+        _baseMigrationDirection = _migrationDirection;
 
         _isMigrating = true;
         StartCoroutine(MigrationRoutine(duration));
@@ -405,6 +422,30 @@ public class Dinosaur : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        // On ignore les collisions entre dinos
+        if (collision.gameObject.TryGetComponent<Dinosaur>(out _)) return;
+
+        Vector3 normal = collision.GetContact(0).normal;
+        normal.z = 0f;
+
+        if (_isMigrating)
+        {
+            // MEGA DINO ET MIGRATION : Rebond net façon DVD
+            if (Vector3.Dot(_migrationDirection, normal) < 0f)
+            {
+                _migrationDirection = Vector3.Reflect(_migrationDirection, normal).normalized;
+                _baseMigrationDirection = _migrationDirection; // Met à jour la coroutine
+            }
+        }
+        else if (_state == DinoState.Wandering)
+        {
+            // PETITS DINOS : On charge la glissade !
+            _obstacleAvoidance = normal; 
+        }
+    }
+/*
+    private void OnCollisionStay2D(Collision2D collision)
+    {
         // On ne rebondit pas sur les autres dinos (le flocking gère déjà ça)
         if (collision.gameObject.TryGetComponent<Dinosaur>(out _)) return;
 
@@ -423,7 +464,7 @@ public class Dinosaur : MonoBehaviour
             }
         }
     }
-
+*/
 #if UNITY_EDITOR
     protected virtual void OnDrawGizmosSelected()
     {
