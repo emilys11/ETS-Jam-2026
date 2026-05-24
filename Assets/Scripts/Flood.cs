@@ -27,7 +27,7 @@ public class Flood : MonoBehaviour
     {
         while (m_sweepTime > 0f)
         {
-            m_sweepTime -= 0.004f;
+            m_sweepTime -= 0.008f;
             transform.position = new Vector3(SweepCurve.Evaluate(m_sweepTime), transform.position.y, transform.position.z);
             yield return null;
         }
