@@ -88,4 +88,46 @@ public class GameManager : MonoBehaviour
         Hard,
         Apocalypse
     }
+
+    [Header("Difficulty Settings")]
+    [SerializeField] private float babyBoomTriggerTime = 40f;
+    [SerializeField] private float megaSpawnStartTime  = 80f;
+    [SerializeField] private float megaSpawnInterval   = 15f;
+    [SerializeField] private float migrationDelay      = 15f;
+    [SerializeField] private int   megaSpawnCountMin   = 1;
+    [SerializeField] private int   megaSpawnCountMax   = 4;
+
+    public float BabyBoomTriggerTime => babyBoomTriggerTime;
+    public float MegaSpawnStartTime  => megaSpawnStartTime;
+    public float MegaSpawnInterval   => megaSpawnInterval;
+    public float MigrationDelay      => migrationDelay;
+    public int   MegaSpawnCountMin   => megaSpawnCountMin;
+    public int   MegaSpawnCountMax   => megaSpawnCountMax;
+    [SerializeField] private float breakTimeMin = 35f;
+    [SerializeField] private float breakTimeMax = 60f;
+    public float BreakTimeMin => breakTimeMin;
+    public float BreakTimeMax => breakTimeMax;
+
+    //TODO call this when game starts with ui
+    public void ApplyDifficulty()
+    {
+        switch (difficulty)
+        {
+            case DifficultyEnum.Easy:
+                babyBoomTriggerTime = 40f; megaSpawnStartTime = 80f; migrationDelay = 15f;
+                megaSpawnInterval = 15f;   megaSpawnCountMin = 1;    megaSpawnCountMax = 4;
+                breakTimeMin = 40f; breakTimeMax = 70f;
+                break;
+            case DifficultyEnum.Hard:
+                babyBoomTriggerTime = 25f; megaSpawnStartTime = 55f; migrationDelay = 10f;
+                megaSpawnInterval = 10f;   megaSpawnCountMin = 2;    megaSpawnCountMax = 5;
+                breakTimeMin = 20f; breakTimeMax = 40f;
+                break;
+            case DifficultyEnum.Apocalypse:
+                babyBoomTriggerTime = 12f; megaSpawnStartTime = 35f; migrationDelay = 5f;
+                megaSpawnInterval = 6f;    megaSpawnCountMin = 3;    megaSpawnCountMax = 7;
+                breakTimeMin = 8f; breakTimeMax = 20f;
+                break;
+        }
+    }
 }
