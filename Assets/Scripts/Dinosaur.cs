@@ -29,7 +29,7 @@ public class Dinosaur : MonoBehaviour
     [SerializeField] protected float reproductionCooldown = 20f; 
 
     [Header("Health")]
-    [SerializeField] private int maxHealth              =3;
+    [SerializeField] public int maxHealth              =3;
     [SerializeField] private int soulValue              =50; //in a good world it would be 0, >:(
 
     [Header("Migration")]
