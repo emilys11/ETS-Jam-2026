@@ -81,7 +81,10 @@ public class Dinosaur : MonoBehaviour
         _children.Add(child);
     }
 
-
+    
+    private float _stuckTimer = 0f;
+    
+    
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -153,6 +156,7 @@ public class Dinosaur : MonoBehaviour
         _state = DinoState.Wandering;
         _stateTimer = UnityEngine.Random.Range(wanderTimeMin, wanderTimeMax);
         _wanderTarget = PickRandomWanderTarget();
+        _stuckTimer = 0f;
     }
 
     private void MoveTowardTarget()
@@ -201,8 +205,16 @@ public class Dinosaur : MonoBehaviour
 
     private Vector3 PickRandomWanderTarget()
     {
+        /*
         Vector2 rand = UnityEngine.Random.insideUnitCircle * wanderRadius;
         return transform.position + new Vector3(rand.x, rand.y, 0f); // X et Y pour la 2D
+    */
+
+    float randomX = UnityEngine.Random.Range(0f, 60f); 
+    float randomY = UnityEngine.Random.Range(0f, 35f); 
+    
+    return new Vector3(randomX, randomY, 0f);
+    
     }
 
     private void CheckNearbyDinos()

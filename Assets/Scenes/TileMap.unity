@@ -2475,58 +2475,6 @@ MonoBehaviour:
   m_CropFrameX: 0
   m_CropFrameY: 0
   m_StretchFill: 0
---- !u!1 &1101935703
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1101935705}
-  - component: {fileID: 1101935704}
-  m_Layer: 0
-  m_Name: GridSpwanService
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1101935704
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1101935703}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2363d10cfc04ea84eb71d9125ea5274e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ValidSpawnHelper
-  availableTileMap:
-  - {fileID: 1627566425}
-  - {fileID: 1976022736}
-  - {fileID: 1142854029}
-  nonAvailableTileMap:
-  - {fileID: 1580381798}
-  - {fileID: 506656434}
-  - {fileID: 1903049891}
---- !u!4 &1101935705
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1101935703}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1142854026
 GameObject:
   m_ObjectHideFlags: 0
@@ -181112,6 +181060,87 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1001 &1333758800168456756
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4199801534083664561, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: m_Name
+      value: GridSpwanService
+      objectReference: {fileID: 0}
+    - target: {fileID: 5218968923767630891, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: 'availableTileMap.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1627566425}
+    - target: {fileID: 5218968923767630891, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: 'availableTileMap.Array.data[1]'
+      value: 
+      objectReference: {fileID: 1976022736}
+    - target: {fileID: 5218968923767630891, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: 'availableTileMap.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1142854029}
+    - target: {fileID: 5218968923767630891, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: 'nonAvailableTileMap.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1580381798}
+    - target: {fileID: 5218968923767630891, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: 'nonAvailableTileMap.Array.data[1]'
+      value: 
+      objectReference: {fileID: 506656434}
+    - target: {fileID: 5218968923767630891, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: 'nonAvailableTileMap.Array.data[2]'
+      value: 
+      objectReference: {fileID: 1903049891}
+    - target: {fileID: 7423549525497939472, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423549525497939472, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423549525497939472, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423549525497939472, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423549525497939472, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423549525497939472, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423549525497939472, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423549525497939472, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423549525497939472, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423549525497939472, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e907a68a8e9ef25498639eb83db9cf1c, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -181120,5 +181149,5 @@ SceneRoots:
   - {fileID: 1515016036}
   - {fileID: 996135342}
   - {fileID: 1422189147}
-  - {fileID: 1101935705}
+  - {fileID: 1333758800168456756}
   - {fileID: 254028102}
