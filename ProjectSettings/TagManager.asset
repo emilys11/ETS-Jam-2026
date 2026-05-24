@@ -6,14 +6,16 @@ TagManager:
   tags:
   - Volcano
   - Flood
+  - WorldBorder
+  - Dinosaur
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
+  - Terrain
   - 
   - 
   - 

@@ -9,12 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8101405726819941932}
-  - component: {fileID: 6350984886047275468}
+  - component: {fileID: -5632751629289079181}
   - component: {fileID: 7444103403827680164}
-  - component: {fileID: 832654198138042200}
-  - component: {fileID: 2042113994502899115}
+  - component: {fileID: 4741258933539753756}
   m_Layer: 0
-  m_Name: Dino
+  m_Name: Meteorite
   m_TagString: Dinosaur
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,13 +28,13 @@ Transform:
   m_GameObject: {fileID: 1555721082614311146}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 62, y: 20, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6350984886047275468
+--- !u!114 &-5632751629289079181
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,22 +43,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 1555721082614311146}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdb27be275c1e994aaa141c5d6b8b9ec, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a0a216639dd34e438dc3a808a13581b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Dinosaur
-  moveSpeed: 3
-  wanderRadius: 8
-  arrivalThreshold: 0.4
-  idleTimeMin: 1.5
-  idleTimeMax: 4
-  wanderTimeMin: 3
-  wanderTimeMax: 8
-  meetingsToReproduce: 3
-  meetingRadius: 1.5
-  meetingCooldown: 5
-  reproductionCooldown: 20
-  maxHealth: 3
-  soulValue: 1
+  m_EditorClassIdentifier: Assembly-CSharp::Meteorite
+  meteoriteSize: 3
+  maxCrashRadius: 3
+  fallingSpeed: 15
+  crashingSpeed: 1
 --- !u!212 &7444103403827680164
 SpriteRenderer:
   serializedVersion: 2
@@ -119,35 +109,8 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!50 &832654198138042200
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1555721082614311146}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
---- !u!61 &2042113994502899115
-BoxCollider2D:
+--- !u!58 &4741258933539753756
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -176,19 +139,9 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Radius: 0.5
