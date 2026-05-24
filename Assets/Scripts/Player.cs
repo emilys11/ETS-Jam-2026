@@ -8,10 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField] PlayerSpawner spawner;
     [SerializeField] Rigidbody target;
 
-    Rigidbody rb;
-
     Vector4 worldBounds;
-
     
     InputActions controls;
     InputAction moveAction;
@@ -19,8 +16,6 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-
         spawner.Player = this;
 
         worldBounds = new Vector4(-1000.0f, 1000.0f, -1000.0f, 1000.0f);

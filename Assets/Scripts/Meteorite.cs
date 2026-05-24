@@ -4,7 +4,7 @@ using UnityEngine;
 public class Meteorite : MonoBehaviour
 {
     [SerializeField] float meteoriteSize = 1.0f;
-    [SerializeField] float maxCrashRadius = 3.0f;
+    [SerializeField] float maxCrashRadius = 0.5f;
     [SerializeField] float fallingSpeed = 40.0f;
     [SerializeField] float crashingSpeed = 1.0f;
 
@@ -19,13 +19,13 @@ public class Meteorite : MonoBehaviour
     void Start()
     {
         crashCollider = GetComponent<CircleCollider2D>();
-        minCrashRadius *= meteoriteSize;
+        minCrashRadius = crashCollider.radius;
         crashCollider.radius = minCrashRadius;
         crashCollider.enabled = false;
 
         renderer = GetComponent<SpriteRenderer>();
 
-        gameObject.transform.localScale *= meteoriteSize;
+        transform.localScale *= meteoriteSize;
     }
 
     void Update()
@@ -69,12 +69,14 @@ public class Meteorite : MonoBehaviour
         if (crashingTimePercentage >= 1.0f)
         {
             isCrashing = false;
+            Destroy(this);
         }
     }
 
-    void OnTriggerEnter(Collider collider)
+    void OnTriggerEnter2D(Collider2D collider)
     {
-        Debug.Log(collider.gameObject.name);
+        Dinosaur dinosaur = collider.GetComponent<Dinosaur>();
+        dinosaur.Kill();
     }
 
     public Vector3 TargetPos { set => targetPos = value; }
