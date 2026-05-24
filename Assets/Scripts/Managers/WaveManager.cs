@@ -7,6 +7,8 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private float migrationDelay    = 15f; //after mega dino spawn
 
 
+    private float _nextBabyBoomTime;
+
     public void ScheduleMegaMigration(MegaDinosaur mega)
     {
         StartCoroutine(MigrationDelayRoutine(mega));
@@ -35,6 +37,23 @@ public class WaveManager : MonoBehaviour
         Debug.Log($"Baby Boom. {allDinos.Length} dinos affected");
     }
 
+    private void Start()
+    {
+        migrationDelay = GameManager.Instance.MigrationDelay;
+        _nextBabyBoomTime = GameManager.Instance.BabyBoomTriggerTime; //for the first wave events
+    }
+    
+    private void Update()
+    {
+        if(GameManager.Instance.GetgameTime >= _nextBabyBoomTime)
+        {
+            TriggerBabyBoom();
+            float randomBreak = Random.Range(GameManager.Instance.BreakTimeMin, GameManager.Instance.BreakTimeMax);
+
+            _nextBabyBoomTime = GameManager.Instance.GetgameTime + randomBreak;
+            Debug.Log($"Next Baby Boom in {randomBreak:F1}s");
+        }
+    }
     
     [ContextMenu("Test Baby Boom")]
     private void TestBabyBoom() => TriggerBabyBoom();

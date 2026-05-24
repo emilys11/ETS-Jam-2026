@@ -1,4 +1,4 @@
-using System;
+
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -26,6 +26,8 @@ public class SpawnManager : MonoBehaviour
     private int _megasSpawned = 0;
     private float _megaSpawnTimer = 0f;
 
+    private float _nextMegaWaveTime = 0f;
+
     bool isFirstSpawn = true;
     [SerializeField] int firstSpawnAmount = 20;
 
@@ -43,9 +45,17 @@ public class SpawnManager : MonoBehaviour
         try { DynoSoulsEvents.OnDinoKill -= OnDinoDied; } catch { }
     }
 
+    
     private void Start()
     {
         _gameManager = GameManager.Instance;
+
+        megaSpawnStartTime = _gameManager.MegaSpawnStartTime;
+        megaSpawnInterval = _gameManager.MegaSpawnInterval;
+        megaSpawnCountMin = _gameManager.MegaSpawnCountMin;
+        megaSpawnCountMax = _gameManager.MegaSpawnCountMax;
+
+
         _audioHandler = AudioHandler.Instance;
         _waveManager = FindAnyObjectByType<WaveManager>();
 
@@ -125,7 +135,16 @@ public class SpawnManager : MonoBehaviour
     {
         if (_megaSapwnTriggered)
         {
-            if (_megasSpawned >= _megasToSpawn) return;
+            if (_megasSpawned >= _megasToSpawn)
+            {
+                _megaSapwnTriggered = false;
+                _megasSpawned = 0;
+                float randomBreak = Random.Range(_gameManager.BreakTimeMin, _gameManager.BreakTimeMax);
+
+                _nextMegaWaveTime = _gameManager.GetgameTime + randomBreak;
+                Debug.Log($"mega wav done. Next in {randomBreak:F1}s");
+                return;
+            }
 
             _megaSpawnTimer -= Time.deltaTime;
             if (_megaSpawnTimer > 0f) return;
@@ -136,7 +155,9 @@ public class SpawnManager : MonoBehaviour
             return;
         }
 
-        if (_gameManager.GetgameTime >= megaSpawnStartTime)
+        float triggerTime = _nextMegaWaveTime > 0f ? _nextMegaWaveTime : megaSpawnStartTime;
+
+        if (_gameManager.GetgameTime >= triggerTime)
         {
             _megaSapwnTriggered = true;
             _megasToSpawn = UnityEngine.Random.Range(megaSpawnCountMin, megaSpawnCountMax + 1);
