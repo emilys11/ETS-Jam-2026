@@ -6,9 +6,9 @@ public class PlayerSpawner : MonoBehaviour
     [SerializeField] Meteorite meteoritePrefab;
     [SerializeField] Volcano volcanoPrefab;
     [SerializeField] Flood floodPrefab;
-    [SerializeField] int meteoriteCostValue = 100;
-    [SerializeField] int volcanoCostValue = 100;
-    [SerializeField] int floodCostValue = 200;
+    [SerializeField] int meteoriteCostValue = 30;
+    [SerializeField] int volcanoCostValue = 300;
+    [SerializeField] int floodCostValue = 500;
 
     Player player;
     Collider spawnArea;

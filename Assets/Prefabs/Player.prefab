@@ -67,6 +67,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerSpawner
   meteoritePrefab: {fileID: 4935697646750724246, guid: 673a561ed617ca644b19e7d8a302f2d8, type: 3}
+  volcanoPrefab: {fileID: 8255683173931268889, guid: 23251d388e8af294096049964d0ecdbe, type: 3}
+  floodPrefab: {fileID: 2484803512803111724, guid: bf94699232f5d474cb586670d1ba4810, type: 3}
+  meteoriteCostValue: 30
+  volcanoCostValue: 200
+  floodCostValue: 500
 --- !u!1 &4258479754458078065
 GameObject:
   m_ObjectHideFlags: 0

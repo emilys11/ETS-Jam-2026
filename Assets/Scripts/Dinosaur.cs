@@ -450,7 +450,7 @@ public class Dinosaur : MonoBehaviour
         {
             float randomChanceToDie = UnityEngine.Random.Range(0, 20);
 
-            if (randomChanceToDie <= 4)
+            if (randomChanceToDie <= 10)
             {
                 TakeDamage(maxHealth);
                 if (AudioHandler.Instance != null && AudioHandler.Instance.charredEffect != null)

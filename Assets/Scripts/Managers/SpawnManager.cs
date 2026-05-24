@@ -18,7 +18,7 @@ public class SpawnManager : MonoBehaviour
     private WaveManager _waveManager;
 
     [Header("Debug")]
-    [SerializeField] private float _spawnRate = 40f;
+    [SerializeField] private float _spawnRate = 5f;
     [SerializeField] private float _timer = 0f;
 
     private bool _megaSapwnTriggered = false;
@@ -97,9 +97,12 @@ public class SpawnManager : MonoBehaviour
 
     private void UpdateSpawnRate()
     {
-        float t = Mathf.Max(_gameManager.GetgameTime, 1f);
-        _spawnRate = Mathf.Max(5f, 5.0f / (t * 0.05f + 1));
-        // Debug.Log($"Spawn rate updated: {_spawnRate}"); // Décommenter si tu veux voir le rate descendre
+        //float t = Mathf.Max(_gameManager.GetgameTime, 1f);
+        //_spawnRate = Mathf.Max(5f, 5.0f / (t * 0.05f + 1));
+        if(_gameManager.GetgameTime == 0f) { return; }
+        _spawnRate = Mathf.Pow((1 / _gameManager.GetgameTime), 0.35f) * 3f;
+        //_spawnRate = Mathf.Pow(1f/_gameManager.GetgameTime,2))*3f;
+        Debug.Log($"Spawn rate updated: {_spawnRate}"); // Décommenter si tu veux voir le rate descendre
     }
 
     private void SpawnDinosaur()

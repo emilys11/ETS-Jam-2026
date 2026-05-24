@@ -8,17 +8,27 @@ public class Volcano : MonoBehaviour
     [SerializeField] private GameObject deathZone;
     VisualEffect volcanoVFX;
 
-    private float eruptCooldown=15f;
+    float lifetime = 30f;
+    float lifetimeTimer = 0f;
+
+    private float eruptCooldown=6f;
+    private float eruptTime = 3f;
     private float eruptTimer = 0f;
 
     private void Start() 
     {
+        lifetimeTimer = GameManager.Instance.GetgameTime;
         volcanoVFX = GetComponent<VisualEffect>();
         volcanoVFX.Stop();
     }
 
     private void Update() 
     {
+        if(GameManager.Instance.GetgameTime - lifetimeTimer > lifetime) 
+        {
+            Destroy(gameObject);
+        }
+
         eruptTimer += Time.deltaTime;
         if (eruptTimer >= eruptCooldown)
         {
@@ -28,10 +38,10 @@ public class Volcano : MonoBehaviour
     }
     IEnumerator EruptCoroutine()
     {
+        AudioHandler.Instance.PlayEffect(AudioHandler.Instance.volcanoEffect, "Volcanos");
         volcanoVFX.Play();
         deathZone.gameObject.SetActive(true);
-        AudioHandler.Instance.PlayEffect(AudioHandler.Instance.volcanoEffect,"Volcanos");
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(eruptTime);
         Unerupt();
     }
 
