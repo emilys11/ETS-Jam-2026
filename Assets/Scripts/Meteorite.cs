@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class Meteorite : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Meteorite : MonoBehaviour
 
     CircleCollider2D crashCollider;
     SpriteRenderer renderer;
+    VisualEffect vfx;
 
     float minCrashRadius;
     Vector3 targetPos;
@@ -19,6 +21,9 @@ public class Meteorite : MonoBehaviour
     void Start()
     {
         crashCollider = GetComponent<CircleCollider2D>();
+        vfx = GetComponent<VisualEffect>();
+
+        vfx.Stop();
         minCrashRadius = crashCollider.radius;
         crashCollider.radius = minCrashRadius;
         crashCollider.enabled = false;
@@ -48,15 +53,20 @@ public class Meteorite : MonoBehaviour
 
         if (Vector3.Distance(transform.position, targetPos) <= 0.01f)
         {
+            vfx.Play();
+            vfx.SetVector3("pos", gameObject.transform.position);
             crashCollider.enabled = true;
             InitiateCrash();
-        }
+        } 
     }
 
     public void InitiateCrash()
     {
         isCrashing = true;
         renderer.enabled = false;
+
+        if (AudioHandler.Instance != null && AudioHandler.Instance.meteorLanding != null)
+            AudioHandler.Instance.PlayEffect(AudioHandler.Instance.meteorLanding, "Meteors");
     }
 
     void Crash()
@@ -78,6 +88,8 @@ public class Meteorite : MonoBehaviour
     {
         Dinosaur dinosaur = collider.GetComponent<Dinosaur>();
         dinosaur.Kill();
+        if (AudioHandler.Instance != null && AudioHandler.Instance.crushedEffect != null)
+            AudioHandler.Instance.PlayEffect(AudioHandler.Instance.crushedEffect, "CrushedDeath");
     }
 
     public Vector3 TargetPos { set => targetPos = value; }

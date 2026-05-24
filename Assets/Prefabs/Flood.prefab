@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1555721082614311146
+--- !u!1 &1344351272846419346
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,42 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 8101405726819941932}
-  - component: {fileID: 7444103403827680164}
-  - component: {fileID: 832654198138042200}
-  - component: {fileID: 2042113994502899115}
-  - component: {fileID: 7522517696656291380}
-  - component: {fileID: 6236879445858778213}
+  - component: {fileID: 6739473100761939483}
+  - component: {fileID: 2490405630121719055}
+  - component: {fileID: 3796679273469621445}
+  - component: {fileID: 2484803512803111724}
   m_Layer: 0
-  m_Name: Megadino
-  m_TagString: Untagged
+  m_Name: Flood
+  m_TagString: Flood
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &8101405726819941932
+--- !u!4 &6739473100761939483
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1555721082614311146}
+  m_GameObject: {fileID: 1344351272846419346}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 62, y: 20, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: -100, y: -0.03, z: 0}
+  m_LocalScale: {x: 50, y: 50, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &7444103403827680164
+--- !u!212 &2490405630121719055
 SpriteRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1555721082614311146}
+  m_GameObject: {fileID: 1344351272846419346}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -83,9 +81,9 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 972fd166ce5245d44a56fd5d14e28cb2, type: 3}
+  m_Sprite: {fileID: 1201756708, guid: e587efa488cc4e14d8a40af4156c08e0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -95,40 +93,13 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!50 &832654198138042200
-Rigidbody2D:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1555721082614311146}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
---- !u!61 &2042113994502899115
+--- !u!61 &3796679273469621445
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1555721082614311146}
+  m_GameObject: {fileID: 1344351272846419346}
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
@@ -159,7 +130,7 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5039308, y: 0.104297645}
+    pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
@@ -168,63 +139,15 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &7522517696656291380
+--- !u!114 &2484803512803111724
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1555721082614311146}
+  m_GameObject: {fileID: 1344351272846419346}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9da126fa233bddf4c97ebcb6d3b72fbe, type: 3}
+  m_Script: {fileID: 11500000, guid: b50c7745bade37b4fa036141f3f4363c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MegaDinosaur
-  moveSpeed: 3
-  wanderRadius: 8
-  arrivalThreshold: 0.4
-  idleTimeMin: 1.5
-  idleTimeMax: 4
-  wanderTimeMin: 3
-  wanderTimeMax: 8
-  meetingsToReproduce: 8
-  meetingRadius: 1.5
-  meetingCooldown: 5
-  reproductionCooldown: 20
-  maxHealth: 3
-  soulValue: 1
-  migrationSpeed: 8
-  migrationVariation: 15
-  flockFollowDistance: 6
-  flockSeparationRadius: 1.8
-  dinoSprites:
-  - {fileID: 21300000, guid: d27041ab39968034c98a576b277f7db0, type: 3}
-  - {fileID: 21300000, guid: 71d093c274a6ffd45ac3bab46907e102, type: 3}
-  - {fileID: 21300000, guid: 1addeaa711628204a927cb1ea4320ec5, type: 3}
-  - {fileID: 21300000, guid: 10855f2b87951bc4ab8a51292599ad65, type: 3}
-  megaMaxHealth: 15
-  auraRadius: 8
-  auraCooldownReduction: 50
-  migrationDuration: 20
---- !u!95 &6236879445858778213
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1555721082614311146}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9036ab809ef548a458016742464e7c2c, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  m_EditorClassIdentifier: Assembly-CSharp::Flood

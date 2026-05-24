@@ -29,7 +29,7 @@ public class Dinosaur : MonoBehaviour
     [SerializeField] protected float reproductionCooldown = 20f; 
 
     [Header("Health")]
-    [SerializeField] private int maxHealth              =3;
+    [SerializeField] public int maxHealth              =3;
     [SerializeField] private int soulValue              =50; //in a good world it would be 0, >:(
 
     [Header("Migration")]
@@ -81,7 +81,10 @@ public class Dinosaur : MonoBehaviour
         _children.Add(child);
     }
 
-
+    
+    private float _stuckTimer = 0f;
+    
+    
     protected virtual void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
@@ -153,6 +156,7 @@ public class Dinosaur : MonoBehaviour
         _state = DinoState.Wandering;
         _stateTimer = UnityEngine.Random.Range(wanderTimeMin, wanderTimeMax);
         _wanderTarget = PickRandomWanderTarget();
+        _stuckTimer = 0f;
     }
 
     private void MoveTowardTarget()
@@ -201,8 +205,16 @@ public class Dinosaur : MonoBehaviour
 
     private Vector3 PickRandomWanderTarget()
     {
+        /*
         Vector2 rand = UnityEngine.Random.insideUnitCircle * wanderRadius;
         return transform.position + new Vector3(rand.x, rand.y, 0f); // X et Y pour la 2D
+    */
+
+    float randomX = UnityEngine.Random.Range(0f, 60f); 
+    float randomY = UnityEngine.Random.Range(0f, 35f); 
+    
+    return new Vector3(randomX, randomY, 0f);
+    
     }
 
     private void CheckNearbyDinos()
@@ -385,9 +397,6 @@ public class Dinosaur : MonoBehaviour
 
         if(GameManager.Instance != null)
             GameManager.Instance.IncrementDinosKilled();
-            
-        if(AudioHandler.Instance != null && AudioHandler.Instance.deathEffect != null)
-            AudioHandler.Instance.PlayEffect(AudioHandler.Instance.deathEffect, "Deaths");
 
         StartCoroutine(DeathCleanup());
         Destroy(gameObject, 0.1f);
@@ -430,6 +439,8 @@ public class Dinosaur : MonoBehaviour
         if (collision.gameObject.CompareTag("Volcano") || collision.gameObject.CompareTag("Flood"))
         {
             TakeDamage(maxHealth);
+            if (AudioHandler.Instance != null && AudioHandler.Instance.charredEffect != null)
+                AudioHandler.Instance.PlayEffect(AudioHandler.Instance.charredEffect, "CharredDeath");
         }
     }
 
@@ -452,8 +463,17 @@ public class Dinosaur : MonoBehaviour
         }
         else if (_state == DinoState.Wandering)
         {
-            // PETITS DINOS : On charge la glissade !
-            _obstacleAvoidance = normal; 
+            Vector3 toTarget = (_wanderTarget - transform.position).normalized;
+            // Si on fonce dans le mur (produit scalaire négatif), on abandonne la cible
+            if (Vector3.Dot(toTarget, normal) < -0.5f)
+            {
+                EnterIdle();
+            }
+            else
+            {
+                // Sinon on applique une glissade douce
+                _obstacleAvoidance = normal;
+            }
         }
     }
 /*
