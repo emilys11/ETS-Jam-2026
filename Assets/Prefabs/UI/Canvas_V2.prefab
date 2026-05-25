@@ -309,7 +309,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7958637445394651329, guid: 8f1394ee16639074c8a9e99cc64df296, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -343,7 +343,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1458322226169952121, guid: 482705bc76134804f8bdbb324e3b3959, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1458322226169952121, guid: 482705bc76134804f8bdbb324e3b3959, type: 3}
       propertyPath: m_AnchorMax.y
@@ -429,6 +429,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3810081932217431914, guid: 482705bc76134804f8bdbb324e3b3959, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -211.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5718405554534501804, guid: 482705bc76134804f8bdbb324e3b3959, type: 3}
       propertyPath: m_Name
       value: Panel_Info
@@ -437,9 +441,13 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6496000843044175474, guid: 482705bc76134804f8bdbb324e3b3959, type: 3}
+      propertyPath: m_Value
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8524061551102834294, guid: 482705bc76134804f8bdbb324e3b3959, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8524061551102834294, guid: 482705bc76134804f8bdbb324e3b3959, type: 3}
       propertyPath: m_AnchorMax.y
@@ -447,13 +455,46 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8524061551102834294, guid: 482705bc76134804f8bdbb324e3b3959, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3235615109393199335, guid: 482705bc76134804f8bdbb324e3b3959, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 242932047615998149}
   m_SourcePrefab: {fileID: 100100000, guid: 482705bc76134804f8bdbb324e3b3959, type: 3}
+--- !u!114 &2873740868113208126 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6496000843044175474, guid: 482705bc76134804f8bdbb324e3b3959, type: 3}
+  m_PrefabInstance: {fileID: 9063487934100942156}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5845897226507034027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
+--- !u!1 &5845897226507034027 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3235615109393199335, guid: 482705bc76134804f8bdbb324e3b3959, type: 3}
+  m_PrefabInstance: {fileID: 9063487934100942156}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &242932047615998149
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5845897226507034027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: caa9e6545cf56d44e8d2c71a29d27281, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PopulationSlider
+  populationSlider: {fileID: 2873740868113208126}
+  maxPopulation: 500
 --- !u!224 &6283891525605966608 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3094857286308654684, guid: 482705bc76134804f8bdbb324e3b3959, type: 3}

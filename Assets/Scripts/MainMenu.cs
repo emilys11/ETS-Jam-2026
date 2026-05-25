@@ -68,6 +68,24 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    //ADDED CLICK OPTION
+    public void SelectPlay()
+    {
+        cassetteAnimator.SetTrigger("ToLvlSelect");
+    }
+
+    public void SelectCredits()
+    {
+        creditPanel.SetActive(true);
+        thisPanel.SetActive(false);
+    }
+
+    public void SelectQuit()
+    {
+        Application.Quit();
+    }
+
+
     void Awake()
     {
         controls = new InputActions();

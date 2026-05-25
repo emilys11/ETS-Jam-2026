@@ -66,6 +66,25 @@ public class SelectMenu : MonoBehaviour
         thisPanel.SetActive(false);
     }
 
+    //FOR CLICKING
+    public void SelectEasy()
+    {
+        MenuManager.Instance.StartGame(GameManager.DifficultyEnum.Easy);
+        thisPanel.SetActive(false);
+    }
+
+    public void SelectHard()
+    {
+        MenuManager.Instance.StartGame(GameManager.DifficultyEnum.Hard);
+        thisPanel.SetActive(false);
+    }
+
+    public void SelectApocalypse()
+    {
+        MenuManager.Instance.StartGame(GameManager.DifficultyEnum.Apocalypse);
+        thisPanel.SetActive(false);
+    }
+
 
     void Awake()
     {

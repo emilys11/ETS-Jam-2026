@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
     public void SetDinosKilled(int dk) { dinosKilled = dk; }
     public int GetDinosKilled() { return dinosKilled; }
 
-    private float loseThreshold=500f;
+    public float loseThreshold=500f;
 
     private DifficultyEnum difficulty;
 

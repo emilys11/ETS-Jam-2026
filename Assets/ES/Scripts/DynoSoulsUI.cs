@@ -12,7 +12,7 @@ public class DynoSoulsUI : MonoBehaviour
     void Start()
     {
         amountText.text = DynoSoulsManager.startAmount.ToString();
-        scoreText.text = PrependDigitsToString(DynoSoulsManager.startAmount.ToString());
+        scoreText.text = "0";
     }
 
 
