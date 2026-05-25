@@ -5386,6 +5386,10 @@ PrefabInstance:
       propertyPath: amountText
       value: 
       objectReference: {fileID: 611211909}
+    - target: {fileID: 8643178710000045773, guid: ca85b28e4d6b06845a2ddaa918f213de, type: 3}
+      propertyPath: numOfDigitsToShow
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 9042917490691649072, guid: ca85b28e4d6b06845a2ddaa918f213de, type: 3}
       propertyPath: dinoPrefab
       value: 

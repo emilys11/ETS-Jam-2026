@@ -5,7 +5,7 @@ using TMPro;
 public class DynoSoulsUI : MonoBehaviour
 {
     [Header("Text settings")]
-    public int numOfDigitsToShow = 5;
+    public int numOfDigitsToShow = 8;
     public TextMeshProUGUI amountText;
     public TextMeshProUGUI scoreText;
     
