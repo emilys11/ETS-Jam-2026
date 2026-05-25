@@ -25,6 +25,8 @@ public class CreditMenu : MonoBehaviour
         controls = new InputActions();
     }
 
+
+
     void OnEnable()
     {
         button1 = controls.Player.Button1;
@@ -41,4 +43,5 @@ public class CreditMenu : MonoBehaviour
         button1.Disable();
         button2.Disable();
     }
+
 }
