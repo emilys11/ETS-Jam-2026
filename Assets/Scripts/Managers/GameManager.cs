@@ -23,8 +23,9 @@ public class GameManager : MonoBehaviour
 
     private DifficultyEnum difficulty;
 
-    private void Start() 
+    private void Start()
     {
+        ApplyDifficulty();
     }
 
     private void Awake()
