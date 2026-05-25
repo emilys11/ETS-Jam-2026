@@ -22,7 +22,7 @@ public class DynoSoulsUI : MonoBehaviour
         amountText.text = DynoSoulsManager.currentAmount.ToString();
 
         DynoSoulsEvents.OnUpdateUI += UpdateAmount;
-        scoreText.text = DynoSoulsManager.totalAmount.ToString();
+        scoreText.text = "0";
     }
 
     void OnDisable()

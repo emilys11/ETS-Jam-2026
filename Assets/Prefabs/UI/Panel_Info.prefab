@@ -934,7 +934,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7094733368799162415}
   - component: {fileID: 6496000843044175474}
-  - component: {fileID: 2323743011001009483}
+  - component: {fileID: 1333215940220244543}
   m_Layer: 5
   m_Name: Slider
   m_TagString: Untagged
@@ -1015,7 +1015,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2323743011001009483
+--- !u!114 &1333215940220244543
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1028,7 +1028,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PopulationSlider
   populationSlider: {fileID: 6496000843044175474}
-  maxPopulation: 500
+  maxPopulation: 0
 --- !u!1 &3941658141365825548
 GameObject:
   m_ObjectHideFlags: 0
