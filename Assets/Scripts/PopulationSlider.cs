@@ -6,10 +6,11 @@ public class PopulationSlider : MonoBehaviour
     [SerializeField] private Slider populationSlider;
 
     [Header("Population Settings")]
-    [SerializeField] private int maxPopulation = (int) GameManager.Instance.loseThreshold;
+    [SerializeField] private int maxPopulation;
 
     private void Start()
     {
+        maxPopulation = (int) GameManager.Instance.loseThreshold;
         populationSlider.minValue = 0;
         populationSlider.maxValue = maxPopulation;
     }
